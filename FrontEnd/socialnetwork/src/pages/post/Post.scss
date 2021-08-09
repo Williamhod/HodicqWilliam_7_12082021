@@ -1,0 +1,36 @@
+.Post{
+    width: 100%;
+    height: 750px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.PostForm { 
+    display: flex;
+    flex-direction: column;
+   
+}
+
+.PostForm input,button{ 
+    width: 300px;
+    height: 50px;
+   margin: 10px;
+   font-size: 20px;
+}
+
+.PostForm button{
+    border: 1px black solid;
+    background-color: skyblue;
+    border-radius: 10px 10px 10px 10px ;
+    -webkit-border-radius: 25px 25px 25px 25px ;
+    -moz-border-radius: 10px 10px 10px 10px ;
+    -ms-border-radius: 10px 10px 10px 10px ;
+    -o-border-radius: 10px 10px 10px 10px ;
+}
+
+.PostForm button:hover{
+    cursor: pointer;
+    background-color: rgb(39, 160, 39);
+}
