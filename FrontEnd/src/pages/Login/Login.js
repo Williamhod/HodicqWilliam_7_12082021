@@ -5,8 +5,8 @@ import Axios from "axios";
 import {useHistory} from 'react-router-dom'
 
 function Login() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("test");
+  const [password, setPassword] = useState("test");
 
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -14,6 +14,8 @@ function Login() {
 
   const login = () => {
     Axios.post("http://localhost:3001/user/login", {
+    // http://localhost:3001
+    // Axios.post(`${process.env.URL_BACK}/user/login`, {
       username: username,
       password: password,
     }).then((response) => {
@@ -34,6 +36,7 @@ function Login() {
         <input
           type="text"
           placeholder="Username..."
+          value={username}
           onChange={(event) => {
             setUsername(event.target.value);
           }}
@@ -41,6 +44,7 @@ function Login() {
         <input
           type="password"
           placeholder="Password..."
+          value={password}
           onChange={(event) => {
             setPassword(event.target.value);
           }}

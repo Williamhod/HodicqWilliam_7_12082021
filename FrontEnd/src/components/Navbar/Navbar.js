@@ -1,25 +1,42 @@
 import React, { useEffect, useState } from "react";
+import {Link, useLocation} from 'react-router-dom';
 import "./Navbar.scss";
 
 function Navbar() {
-  const [loggedIn, setLoggedIn] = useState(true);
+  const [loggedIn, setLoggedIn] = useState(JSON.parse(localStorage.getItem("loggedIn")));
+  const location = useLocation();
+
+  function setLogged() {
+    console.log('changement')
+    const item = localStorage.getItem('loggedIn')
+
+    if (item) {
+      setLoggedIn(JSON.parse(item))
+    }
+  }
   useEffect(() => {
-    setLoggedIn(localStorage.getItem("loggedIn"));
-  }, [localStorage.getItem("loggedIn")]);
+    window.addEventListener('storage', ()=>setLogged());
+
+    setLogged();
+  
+    return () => {
+      window.removeEventListener('storage', setLogged)
+    }
+  }, [location]);
 
   return (
     <div className="Navbar">
-      <a href="/">Home</a>
+      <Link to="/">Home</Link>
 
       {loggedIn ? (
         <>
-          <a href="/profile">Profile</a>
-          <a href="/post">post</a>
+          <Link to="/profile">Profile</Link>
+          <Link to="/post">post</Link>
         </>
       ) : (
         <>
-          <a href="/register">Register</a>
-          <a href="/login">Login</a>
+          <Link to="/register">Register</Link>
+          <Link to="/login">Login</Link>
         </>
       )}
     </div>

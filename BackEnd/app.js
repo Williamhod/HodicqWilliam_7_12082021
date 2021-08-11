@@ -17,36 +17,41 @@ const helmet = require("helmet");
  **  Header - Setup    *
  **********************/
 
- app.use((req, res, next) => {
-  res.setHeader(`Access-Control-Allow-Origin`, process.env.HostFront); // Only our website have headers access
-  res.setHeader(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content, Accept, Content-Type, Authorization"
-  );
-  res.setHeader(
-    "Access-Control-Allow-Methods",
-    "GET, POST, PUT, DELETE, PATCH, OPTIONS"
-  );
-  next();
- });
+//  app.use((_req, res, next) => {
+//   res.setHeader(`Access-Control-Allow-Origin`, process.env.HostFront); // Only our website have headers access
+//   res.setHeader(
+//     "Access-Control-Allow-Headers",
+//     "Origin, X-Requested-With, Content, Accept, Content-Type, Authorization"
+//   );
+//   res.setHeader(
+//     "Access-Control-Allow-Methods",
+//     "GET, POST, PUT, DELETE, PATCH, OPTIONS"
+//   );
+//   next();
+//  });
 //
-const Sharp = require('./middleware/sharp-config');
-const Multer = require('./middleware/multer-config');
-// route utilisateurs pour stockage db 
-const userRoute = require('./routes/User')
-const post = require ('./routes/post')
+let corsOptions = {
+  origin: process.env.HostFront,
+}
 
+// route utilisateurs pour stockage db 
+const userRoutes = require('./routes/User.rt')
+const postRoutes = require ('./routes/post.rt')
 
 /********************
  **    App- Use     *
  *******************/
-app.use(cors());
-app.use(express.json())
-app.use("/user", userRoute);
 
+// Middlewares
+app.use(cors(corsOptions));
+app.use(express.json({ limit: '30mb', extended: true }))
+app.use(express.urlencoded({ limit: '30mb', extended: true }));
+app.use(helmet());
 app.use('/images', express.static(path.join(__dirname, 'images')));
 
-app.use(helmet());
+// Routes
+app.use("/user", userRoutes);
+app.use("/post", postRoutes);
 
 
 module.exports = app;
