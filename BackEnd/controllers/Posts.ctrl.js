@@ -2,7 +2,7 @@ const db = require("../config/db");
 
 exports.createPost = (req, res) => {
   const image = req.body.image;
-  const { title, description } = req.body;
+  const { title, description,author } = req.body;
   
   let imageUrl = '';
   if (req.file) {
@@ -10,8 +10,8 @@ exports.createPost = (req, res) => {
   }
   
     db.query(
-      "INSERT INTO post (title, description, image) VALUES (?, ?, ?);",
-      [title, description, imageUrl],
+      "INSERT INTO post (title, description, image, author) VALUES (?, ?, ?, ?);",
+      [title, description, imageUrl,author],
       (err, results) => {
         console.log(err);
         res.send(results);

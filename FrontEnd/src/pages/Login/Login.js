@@ -5,8 +5,8 @@ import Axios from "axios";
 import {useHistory} from 'react-router-dom'
 
 function Login() {
-  const [username, setUsername] = useState("test");
-  const [password, setPassword] = useState("test");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -36,7 +36,6 @@ function Login() {
         <input
           type="text"
           placeholder="Username..."
-          value={username}
           onChange={(event) => {
             setUsername(event.target.value);
           }}
@@ -44,7 +43,6 @@ function Login() {
         <input
           type="password"
           placeholder="Password..."
-          value={password}
           onChange={(event) => {
             setPassword(event.target.value);
           }}

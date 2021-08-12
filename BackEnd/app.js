@@ -17,23 +17,23 @@ const helmet = require("helmet");
  **  Header - Setup    *
  **********************/
 
-//  app.use((_req, res, next) => {
-//   res.setHeader(`Access-Control-Allow-Origin`, process.env.HostFront); // Only our website have headers access
-//   res.setHeader(
-//     "Access-Control-Allow-Headers",
-//     "Origin, X-Requested-With, Content, Accept, Content-Type, Authorization"
-//   );
-//   res.setHeader(
-//     "Access-Control-Allow-Methods",
-//     "GET, POST, PUT, DELETE, PATCH, OPTIONS"
-//   );
-//   next();
-//  });
-//
+ app.use((_req, res, next) => {
+   res.setHeader(`Access-Control-Allow-Origin`, process.env.HostFront); // Only our website have headers access
+   res.setHeader(
+     "Access-Control-Allow-Headers",
+     "Origin, X-Requested-With, Content, Accept, Content-Type, Authorization"
+   );
+   res.setHeader(
+     "Access-Control-Allow-Methods",
+     "GET, POST, PUT, DELETE, PATCH, OPTIONS"
+   );
+   next();
+  });
+
 let corsOptions = {
   origin: process.env.HostFront,
 }
-
+ 
 // route utilisateurs pour stockage db 
 const userRoutes = require('./routes/User.rt')
 const postRoutes = require ('./routes/post.rt')

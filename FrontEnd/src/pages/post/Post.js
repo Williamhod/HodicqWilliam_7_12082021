@@ -4,10 +4,11 @@ import Axios from "axios";
 import { useHistory } from "react-router-dom";
 
 function Post() {
-  const [title, setTitle] = useState("Prout");
-  const [description, setDescription] = useState("Pouet");
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
   const [image, setImage] = useState([]);
-
+  const author = localStorage.getItem("username");
+  
   let history = useHistory();
 
   const post = () => {
@@ -15,6 +16,7 @@ function Post() {
     formData.append("image", image[0]);
     formData.append("title", title);
     formData.append("description", description);
+    formData.append("author", author)
     Axios
       // .post("http://localhost:3001/post", { title, description, image })
       .post("http://localhost:3001/post", formData)
@@ -29,7 +31,6 @@ function Post() {
         <input
           type="text"
           placeholder="Titre"
-          value={title}
           onChange={(event) => {
             setTitle(event.target.value);
           }}
@@ -37,7 +38,6 @@ function Post() {
         <input
           type="text"
           placeholder="Description..."
-          value={description}
           onChange={(event) => {
             setDescription(event.target.value);
           }}
