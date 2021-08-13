@@ -36,7 +36,8 @@ let corsOptions = {
  
 // route utilisateurs pour stockage db 
 const userRoutes = require('./routes/User.rt')
-const postRoutes = require ('./routes/post.rt')
+const postRoutes = require('./routes/Post.rt')
+const likeRoutes = require('./routes/Like.rt')
 
 /********************
  **    App- Use     *
@@ -52,6 +53,7 @@ app.use('/images', express.static(path.join(__dirname, 'images')));
 // Routes
 app.use("/user", userRoutes);
 app.use("/post", postRoutes);
+app.use("/like", likeRoutes);
 
 
 module.exports = app;

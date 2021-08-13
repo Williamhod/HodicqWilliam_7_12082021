@@ -42,7 +42,28 @@
 }
 
 .home .post .description{
-   flex: 70%;
+   flex: 50%;
    text-align: center;
    font-size: 27px;
+}
+
+.Engagement{
+    flex: 20%;
+    display: grid;
+    place-items: center;
+}
+
+#likeButton{
+    font-Size: 40px;
+    color:#59999b;
+}
+
+#likeButton:hover{
+    font-Size: 45px;
+    color:#165758;
+    cursor: pointer;
+}
+
+#likeButton:active{
+    color:#165758;
 }

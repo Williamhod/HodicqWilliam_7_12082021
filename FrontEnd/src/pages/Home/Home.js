@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./Home.scss";
 import Axios from "axios";
 import { useLocation } from "react-router-dom";
+import ThumbUpAltTwoToneIcon from "@material-ui/icons/ThumbUpAltTwoTone";
 
 function Home() {
   const [post, setPost] = useState([]);
@@ -19,11 +20,24 @@ function Home() {
     }
   }, [location]);
 
+  const likePost = (id, key) => {
+    let tempLikes = post;
+    tempLikes[key].likes = tempLikes[key].likes + 1;
+
+    Axios.post("http://localhost:3001/like", {
+      userLiking: localStorage.getItem("username"),
+      postId: id,
+    }).then((response) => {
+      console.log("you like this post ");
+      setPost(tempLikes);
+    });
+  };
+
   return (
-    <div>
+    <>
       {loggedIn ? (
         <div className="home">
-          {post.map((val) => {
+          {post.map((val,key) => {
             return (
               <div className="post">
                 <div className="image">
@@ -35,6 +49,15 @@ function Home() {
                   </div>
                   <div className="description">{val.description}</div>
                 </div>
+                <div className="Engagement">
+                  <ThumbUpAltTwoToneIcon
+                    id="likeButton"
+                    onClick={() => {
+                      likePost(val.id, key);
+                    }}
+                  />
+                  {val.likes}
+                </div>
               </div>
             );
           })}
@@ -42,7 +65,7 @@ function Home() {
       ) : (
         <div>home dc</div>
       )}
-    </div>
+    </>
   );
 }
 
