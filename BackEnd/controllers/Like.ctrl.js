@@ -11,7 +11,7 @@ exports.likePost = (req, res, next) => {
         console.log(err);
       }
       db.query(
-        "UPDATE Uploads SET likes = likes + 1 WHERE id = ?",
+        "UPDATE post SET likes = likes + 1 WHERE id = ?",
         postId,
         (err2, results2) => {
           res.send(results);
