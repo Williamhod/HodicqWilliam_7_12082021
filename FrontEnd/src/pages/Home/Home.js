@@ -2,10 +2,11 @@ import React, { useEffect, useState } from "react";
 import "./Home.scss";
 import Axios from "axios";
 import { useLocation } from "react-router-dom";
-import ThumbUpAltTwoToneIcon from "@material-ui/icons/ThumbUpAltTwoTone";
+import ThumbUpIcon from "@material-ui/icons/ThumbUp";
+import ThumbDownIcon from "@material-ui/icons/ThumbDown";
 
 function Home() {
-  const [post, setPost] = useState([]);
+  const [posts, setPosts] = useState([]);
   const [loggedIn] = useState(JSON.parse(localStorage.getItem("loggedIn")));
   const location = useLocation();
 
@@ -14,22 +15,30 @@ function Home() {
       localStorage.setItem("loggedIn", false);
     }
     if (localStorage.getItem("loggedIn", true)) {
-      Axios.get("http://localhost:3001/post").then((response) => {
-        setPost(response.data);
-      });
+      Axios.get("http://localhost:3001/post")
+        .then((res) => res.data)
+        .then((res) => {
+          setPosts(res);
+          console.log(res);
+        });
     }
   }, [location]);
 
-  const likePost = (id, key) => {
-    let tempLikes = post;
-    tempLikes[key].likes = tempLikes[key].likes + 1;
 
-    Axios.post("http://localhost:3001/like", {
-      userLiking: localStorage.getItem("username"),
-      postId: id,
+  const likeVal = [1, -1];
+
+  const likePost = async (i) => {
+    const lesPosts = [...posts];
+
+    lesPosts[i].nbLikes += likeVal[+lesPosts[i].isLiked];
+    lesPosts[i].isLiked = !lesPosts[i].isLiked;
+
+    await Axios.post("http://localhost:3001/post/like", {
+      userId: 1,
+      postId: lesPosts[i].id,
+      like: lesPosts[i].isLiked,
     }).then((response) => {
-      console.log("you like this post ");
-      setPost(tempLikes);
+      setPosts(lesPosts);
     });
   };
 
@@ -37,26 +46,35 @@ function Home() {
     <>
       {loggedIn ? (
         <div className="home">
-          {post.map((val,key) => {
+          {posts.map((post, key) => {
             return (
-              <div className="post">
+              <div className="post" key={post.id}>
                 <div className="image">
-                  <img src={`http://localhost:3001/${val.image}`} alt="" />
+                  <img src={`http://localhost:3001/${post.image}`} alt="" />
                 </div>
                 <div className="content">
                   <div className="title">
-                    {val.title} /by @ {val.author}
+                    {post.title} /by @ {post.lastname} {post.firstname}
                   </div>
-                  <div className="description">{val.description}</div>
+                  <div className="description">{post.description}</div>
                 </div>
                 <div className="Engagement">
-                  <ThumbUpAltTwoToneIcon
-                    id="likeButton"
-                    onClick={() => {
-                      likePost(val.id, key);
-                    }}
-                  />
-                  {val.likes}
+                  {post.isLiked ? (
+                    <ThumbUpIcon
+                      id="likeButton"
+                      onClick={() => {
+                        likePost(key);
+                      }}
+                    />
+                  ) : (
+                    <ThumbDownIcon
+                      id="likeButton"
+                      onClick={() => {
+                        likePost(key);
+                      }}
+                    />
+                  )}
+                  {post.nbLikes}
                 </div>
               </div>
             );

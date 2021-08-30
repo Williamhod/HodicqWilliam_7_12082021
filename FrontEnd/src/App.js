@@ -4,7 +4,8 @@ import Home from "./pages/Home/Home";
 import Register from "./pages/Register/Register";
 import Login from "./pages/Login/Login";
 import Navbar from "./components/Navbar/Navbar";
-import Post from "./pages/post/Post";
+import Post from "./pages/Post/Post";
+import Profile from "./pages/Profile/Profile";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
           <Route path="/register" exact component={Register} />
           <Route path="/login" exact component={Login} />
           <Route path="/post" exact component={Post} />
+          <Route path="/profile" exact component={Profile} />
         </Switch>
       </Router>
     </>
