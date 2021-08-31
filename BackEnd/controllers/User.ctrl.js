@@ -5,9 +5,13 @@ exports.signup = (req, res, next) => {
   const password = req.body.password;
   const firstname = req.body.firstname;
   const lastname = req.body.lastname;
+  const avatar = 'null';
+  const isAdmin = 0;
+  const dateOfBirth = "0000-00-00";
+
   db.query(
-    "INSERT INTO users (username,password,firstname,lastname) VALUES (?,?,?,?);",
-    [username, password, firstname, lastname],
+    "INSERT INTO users (username,password,firstname,lastname,avatar,isAdmin,dateOfBirth) VALUES (?,?,?,?,?,?,?);",
+    [username, password, firstname, lastname,avatar,isAdmin,dateOfBirth],
     (err, results) => {
       console.log(err);
       res.send(results);

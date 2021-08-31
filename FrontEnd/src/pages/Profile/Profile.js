@@ -33,6 +33,7 @@ function Profile() {
           <>
             <h3>{yourProfile.lastname}</h3>
             <h3>{yourProfile.firstname}</h3>
+            <h3>{yourProfile.dateOfBirth}</h3>
           </>
         ) : (
           "INCONNU"
