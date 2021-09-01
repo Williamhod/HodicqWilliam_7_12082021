@@ -7,6 +7,7 @@
     justify-content: flex-end;
     align-items: center;
     
+    
 }
 
 .Navbar a{
@@ -18,4 +19,15 @@
 }
 .Navbar a:hover{
     cursor: pointer;
+}
+
+
+.Navbar-Button-Container{
+    width: 100%;
+}
+.Navbar-Button{
+    display: flex;
+    flex: 1;
+    justify-content: space-evenly;
+    width: 100%;
 }
