@@ -28,7 +28,7 @@ function Profile() {
 
   return (
     <>
-      <div className="home">
+      <div className="Profile">
         {yourProfile ? (
           <>
             <h3>{yourProfile.lastname}</h3>

@@ -2,11 +2,12 @@ import React, { useEffect, useState } from "react";
 //import { useLocation } from "react-router-dom";
 // Link,
 import "./Navbar.scss";
-
+import LogoNavbarMobile from "./icon.png";
+import LogoNavbarDesk from "./icon-left-font.png";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
+//import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -18,10 +19,14 @@ import { useMediaQuery } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    flexGrow: 1,
+    //flexGrow: 0,
+    //position: "sticky!important",
+    //top: "0",
   },
   menuButton: {
     marginRight: theme.spacing(0),
+    width: "auto!important",
+    color: "#9c0303",
   },
   title: {
     [theme.breakpoints.down("xs")]: { flexGrow: 1 },
@@ -36,6 +41,7 @@ function Navbar(props) {
   const location = useLocation();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("xs"));
+  const isTab = useMediaQuery(theme.breakpoints.down("sm"));
 
   function setLogged() {
     const item = localStorage.getItem("loggedIn");
@@ -107,8 +113,11 @@ function Navbar(props) {
     },
   ];
 
+  //ajust menu link by loggin statement
   const menuItems = loggedIn ? menuItemsLogged : menuItemsNotLogged;
-  console.log(menuItems);
+
+  //Ajust the logo by the screen size
+  const logoNavbar = isTab ? LogoNavbarMobile : LogoNavbarDesk;
 
   return (
     <div className={classes.root}>
@@ -116,20 +125,26 @@ function Navbar(props) {
         position="static"
         style={{
           background:
-            "linear-gradient(70deg, rgba(125,124,124,1) 0%, rgba(114,114,126,0.9) 43%, rgba(255,215,215,1) 100%)",
+            "linear-gradient(70deg, rgba(195,215,215,1) 0%, rgba(172, 172, 185, 0.9) 50%, rgb(255, 214, 214)100%)",
         }}
       >
-        <Toolbar>
-          <Typography variant="h6" className={classes.title}>
-            Photos
-          </Typography>
+        <Toolbar className="Navbar">
+          <div
+            className="logo-navbar-container"
+            onClick={() => handleButtonClick("/")}
+          >
+            <img
+              className="logo-navbar"
+              src={logoNavbar}
+              alt="Logo de l'entreprise"
+            />
+          </div>
           <div className="Navbar-Button-Container">
             {isMobile ? (
               <>
                 <IconButton
                   edge="start"
                   className={classes.menuButton}
-                  color="inherit"
                   aria-label="menu"
                   onClick={handleMenu}
                 >
@@ -143,9 +158,9 @@ function Navbar(props) {
                     horizontal: "right",
                   }}
                   keepMounted
-                  // transformOrigin={{
-                  //   vertical: "top",
-                  //   horizontal: "right",
+                 //  transformOrigin={{
+                 //    vertical: "top",
+                  //  horizontal: "right",
                   // }}
                   open={open}
                   onClose={() => setAnchorEl(null)}
@@ -154,6 +169,7 @@ function Navbar(props) {
                     const { menuTitle, pageURL } = menuItem;
                     return (
                       <MenuItem
+                        className="MenuItem-Li"
                         key={menuItem.id}
                         onClick={() => handleMenuClick(pageURL)}
                       >
@@ -164,13 +180,13 @@ function Navbar(props) {
                 </Menu>
               </>
             ) : (
-              <div className="Navbar-Button">
+              <div className="Navbar-Button-container">
                 {menuItems.map((menuItem) => {
                   const { menuTitle, pageURL } = menuItem;
                   return (
                     <Button
+                      className="Navbar-Button"
                       key={menuItem.id}
-                      variant="contained"
                       onClick={() => handleButtonClick(pageURL)}
                     >
                       {menuTitle}

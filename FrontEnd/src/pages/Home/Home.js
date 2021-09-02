@@ -81,7 +81,7 @@ function Home() {
           })}
         </div>
       ) : (
-        <div>home dc</div>
+        <div className="home">home dc</div>
       )}
     </>
   );
