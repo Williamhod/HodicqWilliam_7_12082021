@@ -1,10 +1,39 @@
 .home{
     width: 100%;
     flex-grow: 1;
+    margin:20px 0;
+}
+
+.home-notloggin{
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
+    width: 90%;
+    margin: 0 auto;
+    background-color: #fff5;
+    padding: 20px;
+}
+
+.home-loggin{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 90%;
+    margin: 0 auto;
+    background-color: #fff5;
+    padding: 20px;
+}
+
+.home-main{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.home-main-img{
+    width: 21em;
 }
 
 .home .post{

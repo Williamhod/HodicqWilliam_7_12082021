@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 //import { useLocation } from "react-router-dom";
 // Link,
 import "./Navbar.scss";
-import LogoNavbarMobile from "./icon.png";
-import LogoNavbarDesk from "./icon-left-font.png";
+import LogoNavbarMobile from "../../images/Logo/icon.png";
+import LogoNavbarDesk from "../../images/Logo/icon-left-font.png";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -20,8 +20,8 @@ import { useMediaQuery } from "@material-ui/core";
 const useStyles = makeStyles((theme) => ({
   root: {
     //flexGrow: 0,
-    //position: "sticky!important",
-    //top: "0",
+    position: "sticky!important",
+    top: "0",
   },
   menuButton: {
     marginRight: theme.spacing(0),
@@ -80,17 +80,17 @@ function Navbar(props) {
   const menuItemsLogged = [
     {
       id: 0,
-      menuTitle: "Home",
+      menuTitle: "Accueil",
       pageURL: "/",
     },
     {
       id: 1,
-      menuTitle: "Post",
+      menuTitle: "Publier",
       pageURL: "/post",
     },
     {
       id: 2,
-      menuTitle: "Profile",
+      menuTitle: "Profil",
       pageURL: "/profile",
     },
   ];
@@ -98,17 +98,17 @@ function Navbar(props) {
   const menuItemsNotLogged = [
     {
       id: 3,
-      menuTitle: "Home",
+      menuTitle: "Accueil",
       pageURL: "/",
     },
     {
       id: 4,
-      menuTitle: "Register",
+      menuTitle: "Inscription",
       pageURL: "/register",
     },
     {
       id: 5,
-      menuTitle: "Login",
+      menuTitle: "Connexion",
       pageURL: "/login",
     },
   ];
