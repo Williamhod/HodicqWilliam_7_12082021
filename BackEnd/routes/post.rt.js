@@ -6,11 +6,12 @@ const ctrl = require('../controllers/Posts.ctrl');
 
 const multer = require('../middleware/multer-config');
 const sharp = require('../middleware/sharp-config');
+const jimp= require('../middleware/jimp-config');
 
 router.get("/", ctrl.readPosts);
 
 // auth
-router.post("/", multer, sharp, ctrl.createPost);
+router.post("/", multer, ctrl.createPost);
 router.post("/like", ctrl.likePost);
 
 module.exports = router;

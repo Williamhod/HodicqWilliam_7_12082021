@@ -19,8 +19,7 @@ const storage = multer.diskStorage({
         let name = file.originalname.replace(/\s/g, '_');          // remplace les espace par un _
         name = name.substring(0, name.lastIndexOf('.'));            //ici enleve a partir du dernier point tout le contenu
         const extension = MIME_TYPES[file.mimetype];
-        callback(null, name + '_' + Date.now() + '_temp.' + extension);  //nom + _ +date+ .+ extension
-        
+        callback(null, name + '_' + Date.now() + '.' + extension);  //nom + _ +date+ .+ extension   
     },
 });
 

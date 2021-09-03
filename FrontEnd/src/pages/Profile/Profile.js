@@ -2,6 +2,8 @@ import "./Profile.scss";
 import React, { useEffect, useState } from "react";
 import Axios from "axios";
 import { useLocation } from "react-router-dom";
+import Moment from "react-moment";
+import "moment/locale/fr";
 
 function Profile() {
   const [yourProfile, setYourProfile] = useState({});
@@ -27,13 +29,14 @@ function Profile() {
   }, [location]);
 
   return (
+    
     <>
       <div className="Profile">
         {yourProfile ? (
           <>
             <h3>{yourProfile.lastname}</h3>
             <h3>{yourProfile.firstname}</h3>
-            <h3>{yourProfile.dateOfBirth}</h3>
+            <h3>{<Moment format="ddd DD MMMM YYYY">{yourProfile.dateOfBirth}</Moment>}</h3>
           </>
         ) : (
           "INCONNU"

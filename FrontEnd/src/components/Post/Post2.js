@@ -20,6 +20,9 @@ import Paper from "@material-ui/core/Paper";
 import InputBase from "@material-ui/core/InputBase";
 import TextFieldsIcon from '@material-ui/icons/TextFields';
 import SendIcon from '@material-ui/icons/Send';
+import Moment from 'react-moment';
+import 'moment/locale/fr';
+
 const useStyles = makeStyles((theme) => ({
 
   root: {
@@ -34,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
   },
   media: {
     height: 0,
-    paddingTop: "56.25%", // 16:9
+    paddingTop: "56.25%", 
   },
   expand: {
     transform: "rotate(0deg)",
@@ -73,7 +76,7 @@ function Post({ post, index, likePost }) {
           </IconButton>
         }
         title={`${post.title} by @${post.lastname} ${post.firstname}`}
-        subheader={post.created_at}
+        subheader={<Moment fromNow className="post-date">{post.created_at}</Moment>}
       />
       <CardMedia
         className={classes.media}
@@ -133,7 +136,7 @@ function Post({ post, index, likePost }) {
               <SendIcon/>
             </IconButton>
           </Paper>
-          <Typography paragraph className="comment"><span className="comment-provider">Hodicq William :</span> <span className="comment-content">Super cette image !  bla bla bla bla</span></Typography>
+          <Typography paragraph className="comment"><span className="comment-provider">Hodicq William :</span> <span className="comment-content">Super cette image !  bla bla bla bla Lorem ipsum dolor, sit amet consectetur adipisicing elit. Minus corporis sapiente pariatur omnis modi quibusdam doloremque hic quos dignissimos dolore, placeat ut sed aut culpa facilis aperiam alias velit temporibus voluptates, quidem at sit recusandae.</span></Typography>
           <Typography paragraph className="comment"><span className="comment-provider">Forth :</span> <span className="comment-content">Mwé, tu peux mieux faire hein !</span></Typography>
           <Typography paragraph className="comment"><span className="comment-provider">Nono :</span> <span className="comment-content">Rhooo Vincent ! Soit Gentil !</span></Typography>
          
