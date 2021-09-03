@@ -31,8 +31,8 @@ exports.login = (req, res) => {
         console.log(err);
       }
       if (results.length > 0) {
-        if (password == results[0].password) {
-          res.json({ loggedIn: true, username: username });
+        if (password === results[0].password) {
+          res.json({ loggedIn: true, username: username, id: results[0].id });
         } else {
           res.json({
             loggedIn: false,

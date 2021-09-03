@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from "react";
-//import { useLocation } from "react-router-dom";
-// Link,
 import "./Navbar.scss";
 import LogoNavbarMobile from "../../images/Logo/icon.png";
 import LogoNavbarDesk from "../../images/Logo/icon-left-font.png";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
-//import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -15,13 +12,13 @@ import Menu from "@material-ui/core/Menu";
 import Button from "@material-ui/core/Button";
 import { withRouter, useLocation } from "react-router-dom";
 import { useMediaQuery } from "@material-ui/core";
-//import { typography } from "@material-ui/system";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     //flexGrow: 0,
     position: "sticky!important",
     top: "0",
+    width: "calc(100vw + 10px)",
   },
   menuButton: {
     marginRight: theme.spacing(0),
@@ -79,39 +76,53 @@ function Navbar(props) {
 
   const menuItemsLogged = [
     {
-      id: 0,
-      menuTitle: "Accueil",
-      pageURL: "/",
-    },
-    {
       id: 1,
       menuTitle: "Publier",
       pageURL: "/post",
+      loggin: "nul",
     },
     {
       id: 2,
       menuTitle: "Profil",
       pageURL: "/profile",
+      loggin: "nul",
+    },
+    {
+      id: 3,
+      menuTitle: "Déconnexion",
+      pageURL: "/",
+      loggin: false,
     },
   ];
 
   const menuItemsNotLogged = [
     {
-      id: 3,
+      id: 4,
       menuTitle: "Accueil",
       pageURL: "/",
-    },
-    {
-      id: 4,
-      menuTitle: "Inscription",
-      pageURL: "/register",
+      loggin: "nul",
     },
     {
       id: 5,
+      menuTitle: "Inscription",
+      pageURL: "/register",
+      loggin: "nul",
+    },
+    {
+      id: 6,
       menuTitle: "Connexion",
       pageURL: "/login",
+      loggin: "nul",
     },
   ];
+
+  const disconnect = (pageURL,loggin) => {
+    handleButtonClick(pageURL);
+    if (loggin === false) {
+      localStorage.clear();
+      history.push("/login");
+    }
+  };
 
   //ajust menu link by loggin statement
   const menuItems = loggedIn ? menuItemsLogged : menuItemsNotLogged;
@@ -158,8 +169,8 @@ function Navbar(props) {
                     horizontal: "right",
                   }}
                   keepMounted
-                 //  transformOrigin={{
-                 //    vertical: "top",
+                  //  transformOrigin={{
+                  //    vertical: "top",
                   //  horizontal: "right",
                   // }}
                   open={open}
@@ -182,12 +193,12 @@ function Navbar(props) {
             ) : (
               <div className="Navbar-Button-container">
                 {menuItems.map((menuItem) => {
-                  const { menuTitle, pageURL } = menuItem;
+                  const { id,menuTitle, pageURL, loggin } = menuItem;
                   return (
                     <Button
                       className="Navbar-Button"
-                      key={menuItem.id}
-                      onClick={() => handleButtonClick(pageURL)}
+                      key={id}
+                      onClick={()=>disconnect(pageURL,loggin)}
                     >
                       {menuTitle}
                     </Button>
@@ -203,43 +214,3 @@ function Navbar(props) {
 }
 
 export default withRouter(Navbar);
-/*function Navbar() {
-  const [loggedIn, setLoggedIn] = useState(JSON.parse(localStorage.getItem("loggedIn")));
-  const location = useLocation();
-
-  function setLogged() {
-    const item = localStorage.getItem('loggedIn')
-
-    if (item) {
-      setLoggedIn(JSON.parse(item))
-    }
-  }
-  useEffect(() => {
-    window.addEventListener('storage', ()=>setLogged());
-
-    setLogged();
-  
-    return () => {
-      window.removeEventListener('storage', setLogged)
-    }
-  }, [location]);
-
-  return (
-    <div className="Navbar">
-      <Link to="/">Home</Link>
-
-      {loggedIn ? (
-        <>
-          <Link to="/profile">Profile</Link>
-          <Link to="/post">post</Link>
-        </>
-      ) : (
-        <>
-          <Link to="/register">Register</Link>
-          <Link to="/login">Login</Link>
-        </>
-      )}
-    </div>
-  );
-}
-*/

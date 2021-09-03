@@ -7,7 +7,7 @@ function Post() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [image, setImage] = useState([]);
-  const author = localStorage.getItem("username");
+  const author = localStorage.getItem("userid");
   
   let history = useHistory();
 
@@ -18,7 +18,6 @@ function Post() {
     formData.append("description", description);
     formData.append("author", author)
     Axios
-      // .post("http://localhost:3001/post", { title, description, image })
       .post("http://localhost:3001/post", formData)
     .then(() => {
       history.push("/");

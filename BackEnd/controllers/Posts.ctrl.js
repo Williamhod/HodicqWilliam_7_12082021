@@ -6,11 +6,13 @@ exports.createPost = (req, res) => {
 
   let imageUrl = "";
   if (req.file) {
-    imageUrl = req.file.path.replace("_temp", "");
+    const {destination,filename} = req.file;
+    // imageUrl = req.file.path.replace("_temp", "");
+    imageUrl = destination + '\/' + filename.replace("_temp", "");
   }
-
+  
   db.query(
-    "INSERT INTO post (title, description, image, author) VALUES (?, ?, ?, ?);",
+    "INSERT INTO post (title, description, image, userid) VALUES (?, ?, ?, ?);",
     [title, description, imageUrl, author],
     (err, results) => {
       console.log(err);

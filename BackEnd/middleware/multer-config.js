@@ -5,7 +5,7 @@ const MIME_TYPES = {
     'image/jpg' : 'jpg',
     'image/jpeg': 'jpg',
     'image/png' : 'jpg',
-    // 'image/gif' : 'gif',
+    'image/gif' : 'gif',
 };
 
 //dictionnaire des type de fichier pris par le front jpeg qui sera traduis en jpg
@@ -20,6 +20,7 @@ const storage = multer.diskStorage({
         name = name.substring(0, name.lastIndexOf('.'));            //ici enleve a partir du dernier point tout le contenu
         const extension = MIME_TYPES[file.mimetype];
         callback(null, name + '_' + Date.now() + '_temp.' + extension);  //nom + _ +date+ .+ extension
+        
     },
 });
 

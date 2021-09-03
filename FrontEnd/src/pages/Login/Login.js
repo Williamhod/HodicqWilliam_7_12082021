@@ -22,6 +22,7 @@ function Login() {
       if (response.data.loggedIn) {
         localStorage.setItem("loggedIn", true);
         localStorage.setItem("username", response.data.username);
+        localStorage.setItem("userid", response.data.id);
         history.push("/");
       } else {
         setErrorMessage(response.data.message);

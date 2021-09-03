@@ -2,10 +2,9 @@ import React, { useEffect, useState } from "react";
 import "./Home.scss";
 import Axios from "axios";
 import { useLocation } from "react-router-dom";
-import ThumbUpIcon from "@material-ui/icons/ThumbUp";
-import ThumbDownIcon from "@material-ui/icons/ThumbDown";
 import Logobar from "../../images/Logo/icon-left-font.png";
 import { LoremIpsum } from "lorem-ipsum";
+import Post from "../../components/Post/Post2";
 
 function Home() {
   const [posts, setPosts] = useState([]);
@@ -59,39 +58,7 @@ function Home() {
       {loggedIn ? (
         <div className="home">
           <div  className="home-loggin">
-            {posts.map((post, key) => {
-              return (
-                <div className="post" key={post.id}>
-                  <div className="image">
-                    <img src={`http://localhost:3001/${post.image}`} alt="" />
-                  </div>
-                  <div className="content">
-                    <div className="title">
-                      {post.title} /by @ {post.lastname} {post.firstname}
-                    </div>
-                    <div className="description">{post.description}</div>
-                  </div>
-                  <div className="Engagement">
-                    {post.isLiked ? (
-                      <ThumbUpIcon
-                        id="likeButton"
-                        onClick={() => {
-                          likePost(key);
-                        }}
-                      />
-                    ) : (
-                      <ThumbDownIcon
-                        id="likeButton"
-                        onClick={() => {
-                          likePost(key);
-                        }}
-                      />
-                    )}
-                    {post.nbLikes}
-                  </div>
-                </div>
-              );
-            })}
+            {posts.map((post, key) => <Post post={post} key={key} index={key} likePost={likePost}/>)}
           </div>
         </div>
       ) : (
