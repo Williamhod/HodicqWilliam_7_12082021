@@ -1,5 +1,5 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
 import clsx from "clsx";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
@@ -13,15 +13,10 @@ import Typography from "@material-ui/core/Typography";
 import { red } from "@material-ui/core/colors";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
-import CommentIcon from "@material-ui/icons/Comment";
+import CommentIcon from '@material-ui/icons/Comment';
 import "./Post.scss";
 
-import Paper from "@material-ui/core/Paper";
-import InputBase from "@material-ui/core/InputBase";
-import TextFieldsIcon from '@material-ui/icons/TextFields';
-import SendIcon from '@material-ui/icons/Send';
 const useStyles = makeStyles((theme) => ({
-
   root: {
     //maxWidth: 345,
     backgroundColor: "#fff9",
@@ -117,26 +112,11 @@ function Post({ post, index, likePost }) {
       </CardActions>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
-          <Paper component="form" className="input-comment-container">
-            <IconButton className={classes.iconButton} aria-label="">
-              <TextFieldsIcon />
-            </IconButton>
-            <InputBase
-              className="comment-input-card"
-              placeholder="Ecrit ton commentaire"
-            />
-            <IconButton
-              color="primary"
-              className={classes.iconButton}
-              aria-label="envoyer un commentaire"
-            >
-              <SendIcon/>
-            </IconButton>
-          </Paper>
-          <Typography paragraph className="comment"><span className="comment-provider">Hodicq William :</span> <span className="comment-content">Super cette image !  bla bla bla bla</span></Typography>
-          <Typography paragraph className="comment"><span className="comment-provider">Forth :</span> <span className="comment-content">Mwé, tu peux mieux faire hein !</span></Typography>
-          <Typography paragraph className="comment"><span className="comment-provider">Nono :</span> <span className="comment-content">Rhooo Vincent ! Soit Gentil !</span></Typography>
-         
+          <Typography paragraph>Commentaire</Typography>
+          <Typography paragraph>1er comments</Typography>
+          <Typography paragraph>2eme comments</Typography>
+          <Typography paragraph>3eme comments</Typography>
+          <Typography>4eme comments</Typography>
         </CardContent>
       </Collapse>
     </Card>

@@ -5,3 +5,68 @@
 .Likeposition{
     color: red!important;
 }
+
+.comment-input-card{
+    width: 90%;
+}
+
+.input-comment-container{
+    width: 100%;
+    margin-bottom: 18px!important;
+}
+
+@media(max-width: 1400px){
+    .comment-input-card{
+        width: 88%;
+    }
+}
+@media(max-width: 1200px){
+    .comment-input-card{
+        width: 86%;
+    }
+}
+@media(max-width: 969px){
+    .comment-input-card{
+        width: 81%;
+    }
+}
+
+@media(max-width: 668px){
+    .comment-input-card{
+        width: 75%;
+    }
+}
+
+@media (max-width:500px){
+    .comment-input-card{
+        width: 66%;
+    }
+  }
+
+@media (max-width:350px){
+    .comment-input-card{
+        width: 62%;
+    }
+  }
+
+  .comment{
+      background-color: rgba(228, 209, 209, 0.274);
+      border: 1px rgb(155, 155, 155) solid;
+      border-radius: 5px;
+      -webkit-border-radius: 5px;
+      -moz-border-radius: 5px;
+      -ms-border-radius: 5px;
+      -o-border-radius: 5px;
+      box-shadow:  0px 1px 1px 1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 1px 0px rgb(0 0 0 / 12%);
+}
+
+.comment-provider{
+    font-size: 15px;
+    color: #e86969;
+    font-style: italic;
+}
+
+.comment-content{
+    font-size: 16px;
+    font-style: oblique;
+}

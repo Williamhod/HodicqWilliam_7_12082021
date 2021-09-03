@@ -7,8 +7,8 @@ module.exports = async (req, _res, next) => {
         const { filename, path:temp_image } = req.file;
 
         await sharp(req.file.path)
-            .resize(500)
-            .jpeg({ quality: 50 })
+            .resize(800)
+            .jpeg({ quality: 100 })
             .toFile(path.resolve(req.file.destination, '', filename.replace('_temp','')));
         fs.unlinkSync(temp_image);
     }

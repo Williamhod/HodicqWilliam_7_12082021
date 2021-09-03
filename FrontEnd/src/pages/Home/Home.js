@@ -5,6 +5,7 @@ import { useLocation } from "react-router-dom";
 import Logobar from "../../images/Logo/icon-left-font.png";
 import { LoremIpsum } from "lorem-ipsum";
 import Post from "../../components/Post/Post2";
+import LogoLoading from "../../images/Logo/icon.png";
 
 function Home() {
   const [posts, setPosts] = useState([]);
@@ -58,7 +59,14 @@ function Home() {
       {loggedIn ? (
         <div className="home">
           <div  className="home-loggin">
-            {posts.map((post, key) => <Post post={post} key={key} index={key} likePost={likePost}/>)}
+            {posts.map((post, key) => <Post post={post} key={key} index={key} likePost={likePost} />)}
+            <div>
+          <img
+              className="logo-homePage"
+              src={LogoLoading}
+              alt="Logo de l'entreprise"
+            />
+          </div>
           </div>
         </div>
       ) : (

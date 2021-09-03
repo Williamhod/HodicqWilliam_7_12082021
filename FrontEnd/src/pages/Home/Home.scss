@@ -26,74 +26,22 @@
     padding: 20px;
 }
 
-.home-main{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-.home-main-img{
-    width: 21em;
-    max-width: 90%;
-}
 
-.home .post{
-    width: 750px;
-    height: 600px;
-    border: 2px solid black;
-    display: flex;
-    flex-direction: column;
-    margin: 50px;
+
+
+
+.logo-homePage {
+    animation: App-logo-spin infinite 5s linear;
+    width: 50px;
+    height: 60px;
+    -webkit-animation: App-logo-spin infinite 5s linear;
 }
 
-//img post
-
-.home .post .image{
-    flex: 70%;
-  
-}
-
-.home .post .image img {
-   width: 100%;
-}
-
-//content post
-
-.home .post .content{
-    flex: 30%;
-    display: flex;
-    flex-direction: column;
-}
-
-.home .post .title{
-    flex: 30%;
-    text-align: center;
-    font-size: 30px;
-}
-
-.home .post .description{
-   flex: 50%;
-   text-align: center;
-   font-size: 27px;
-}
-
-.Engagement{
-    flex: 20%;
-    display: grid;
-    place-items: center;
-}
-
-#likeButton{
-    font-Size: 40px;
-    color:#59999b;
-}
-
-#likeButton:hover{
-    font-Size: 45px;
-    color:#165758;
-    cursor: pointer;
-}
-
-#likeButton:active{
-    color:#165758;
-}
+  @keyframes App-logo-spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
