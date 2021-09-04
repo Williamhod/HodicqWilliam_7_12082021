@@ -78,7 +78,7 @@ function Home() {
                 alt="Logo de l'entreprise"
                 className="home-main-img"
               />
-              <h1>Bienvenue sur notre application sociale !</h1>
+              <h1>Bienvenue à tous sur notre réseaux sociale d'entreprise !</h1>
             </div>
             <div>
               <p>{lorem.generateParagraphs(7)}</p>

@@ -13,5 +13,7 @@ router.get("/", ctrl.readPosts);
 // auth
 router.post("/", multer, ctrl.createPost);
 router.post("/like", ctrl.likePost);
+router.post("/comment", ctrl.sendComment);
+router.get("/:id/comments", ctrl.getComments);
 
 module.exports = router;
