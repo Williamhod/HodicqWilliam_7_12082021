@@ -1,81 +1,74 @@
-
-.Navbar{
-height: 80px;
+.Navbar {
+  height: 80px;
 }
 
-
-.Navbar-Button-Container{
-    width: 100%;
-    
+.Navbar-Button-Container {
+  width: 100%;
 }
-.Navbar-Button-container{
-    display: flex;
-    flex: 1;
-    justify-content: space-evenly;
-    width: 95%;
-    margin-right: 10px!important;
+.Navbar-Button-container {
+  display: flex;
+  flex: 1;
+  justify-content: space-evenly;
+  width: 95%;
+  margin-right: 10px !important;
 }
 
-.Navbar-Button{
-    font-size: 21px!important;
-    color: #9c0303!important;
-    width: auto!important;
-    padding: 0 1.4em !important;
-    
+.Navbar-Button {
+  font-size: 21px !important;
+  color: #9c0303 !important;
+  width: auto !important;
+  padding: 0 1.4em !important;
 }
 
-.Navbar-Button:focus{
-    color: rgb(92, 5, 5)!important;
+.Navbar-Button:focus {
+  color: rgb(92, 5, 5) !important;
 }
 
-.Navbar-Button:hover{
-    background-color: #fff5!important;
+.Navbar-Button:hover {
+  background-color: #fff5 !important;
 }
 
-.Navbar-Button:focus{
-    background-color: #fff5!important;
+.Navbar-Button:focus {
+  background-color: #fff5 !important;
 }
 
-.logo-navbar-container{
-    max-height: 50px;  
-   flex: 1;
-   margin-left:10px !important;
+.logo-navbar-container {
+  max-height: 50px;
+  flex: 1;
+  margin-left: 10px !important;
 }
 
-.logo-navbar-container:hover{
-cursor: pointer;
+.logo-navbar-container:hover {
+  cursor: pointer;
 }
 
-.MenuItem-Li{
-    width: 100px!important;
-    justify-content: center!important;
+.MenuItem-Li {
+  width: 100px !important;
+  justify-content: center !important;
 }
-.logo-navbar{
-max-height: 50px;
-max-width: 290px;
+.logo-navbar {
+  max-height: 50px;
+  max-width: 290px;
 }
-
-
 
 @media (max-width: 958px) {
-    .logo-navbar {
-      animation: App-logo-spin infinite 20s linear;
-    }
-    
+  .logo-navbar {
+    animation: App-logo-spin infinite 20s linear;
+    -webkit-animation: App-logo-spin infinite 20s linear;
   }
+}
 
 @keyframes App-logo-spin {
-    from {
-      transform: rotate(0deg);
-    }
-    to {
-      transform: rotate(360deg);
-    }
+  from {
+    transform: rotate(0deg);
   }
+  to {
+    transform: rotate(360deg);
+  }
+}
 
-  @media (max-width:600px){
-    .Navbar-Button-Container{
-        width: auto;
-        
-    }
+@media (max-width: 600px) {
+  .Navbar-Button-Container {
+    width: auto;
   }
+}

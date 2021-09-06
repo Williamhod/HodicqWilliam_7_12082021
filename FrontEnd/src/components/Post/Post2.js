@@ -100,7 +100,7 @@ function Post({ post, index, likePost }) {
       <CardHeader
         avatar={
           <Avatar aria-label="recipe" className={classes.avatar}>
-            R
+           {post.firstname.substr(0,1)}
           </Avatar>
         }
         action={

@@ -72,7 +72,7 @@ function Home() {
       ) : (
         <div className="home">
           <div className="home-notloggin">
-            <div className="home-main">
+            <div className="home-notloggin-main">
               <img
                 src={Logobar}
                 alt="Logo de l'entreprise"
@@ -81,11 +81,11 @@ function Home() {
               <h1>Bienvenue à tous sur notre réseaux sociale d'entreprise !</h1>
             </div>
             <div>
-              <p>{lorem.generateParagraphs(7)}</p>
-              <p>{lorem.generateParagraphs(5)}</p>
-              <p>{lorem.generateParagraphs(3)}</p>
-              <p>{lorem.generateParagraphs(2)}</p>
-              <p>{lorem.generateParagraphs(1)}</p>
+              <p className="home-notloggin-P">{lorem.generateParagraphs(7)}</p>
+              <p className="home-notloggin-P">{lorem.generateParagraphs(5)}</p>
+              <p className="home-notloggin-P">{lorem.generateParagraphs(3)}</p>
+              <p className="home-notloggin-P">{lorem.generateParagraphs(2)}</p>
+              <p className="home-notloggin-P">{lorem.generateParagraphs(1)}</p>
             </div>
           </div>
         </div>

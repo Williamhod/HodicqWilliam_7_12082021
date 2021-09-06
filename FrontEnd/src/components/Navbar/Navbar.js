@@ -90,7 +90,7 @@ function Navbar(props) {
     {
       id: 3,
       menuTitle: "Déconnexion",
-      pageURL: "/",
+      pageURL: "/login",
       loggin: false,
     },
   ];
@@ -120,7 +120,7 @@ function Navbar(props) {
     handleButtonClick(pageURL);
     if (loggin === false) {
       localStorage.clear();
-      history.push("/login");
+      window.location.reload(false);
     }
   };
 

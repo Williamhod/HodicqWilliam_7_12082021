@@ -13,6 +13,14 @@
 .input-comment-container{
     width: 100%;
     margin-bottom: 18px!important;
+    display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+}
+.MuiAvatar-root{
+    text-transform: uppercase;
+    background-color: #dd6a62!important;
 }
 
 .post-date::first-letter {
