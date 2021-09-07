@@ -19,6 +19,7 @@ const useStyles = makeStyles((theme) => ({
     position: "sticky!important",
     top: "0",
     width: "calc(100vw + 10px)",
+    zIndex:999,
   },
   menuButton: {
     marginRight: theme.spacing(0),

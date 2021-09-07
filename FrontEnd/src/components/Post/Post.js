@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
 import Card from "@material-ui/core/Card";
@@ -59,7 +59,6 @@ function Post({ post, index, likePost }) {
   const [expanded, setExpanded] = React.useState(false);
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState([]);
-  
 
   const userId = localStorage.getItem("userid");
   const postId = post.id;
@@ -81,7 +80,7 @@ function Post({ post, index, likePost }) {
     }).then((_res) => {
       // setComments([...comments, comment]);
       getComments();
-       setComment("")
+      setComment("");
     });
   };
 
@@ -100,7 +99,7 @@ function Post({ post, index, likePost }) {
       <CardHeader
         avatar={
           <Avatar aria-label="recipe" className={classes.avatar}>
-           {post.firstname.substr(0,1)}
+            {post.firstname.substr(0, 1)}
           </Avatar>
         }
         action={
@@ -153,13 +152,17 @@ function Post({ post, index, likePost }) {
       </CardActions>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
-          <Paper component="form" onSubmit={onSubmit} className="input-comment-container">
+          <Paper
+            component="form"
+            onSubmit={onSubmit}
+            className="input-comment-container"
+          >
             <IconButton className={classes.iconButton} aria-label="">
               <TextFieldsIcon />
             </IconButton>
             <InputBase
               className="comment-input-card"
-              placeholder="Ecrit ton commentaire"
+              placeholder="Ecris ton commentaire"
               type="text"
               value={comment}
               onChange={(event) => setComment(event.target.value)}
@@ -174,8 +177,8 @@ function Post({ post, index, likePost }) {
             </IconButton>
           </Paper>
           {comments.length ? (
-            comments.map((comment) => (
-              <Comment author={comment.author} content={comment.comment} />
+            comments.map((comment,key) => (
+              <Comment author={comment.author} key={key} content={comment.comment} />
             ))
           ) : (
             <p>Be The Very First one To comment</p>

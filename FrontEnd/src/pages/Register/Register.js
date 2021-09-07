@@ -12,6 +12,7 @@ import Button from "@material-ui/core/Button";
 import AccountBoxIcon from "@material-ui/icons/AccountBox";
 import VpnKeyIcon from "@material-ui/icons/VpnKey";
 import ContactsIcon from "@material-ui/icons/Contacts";
+import * as utils from "../../utils";
 
 const useStyles = makeStyles((theme) => ({
   margin: {
@@ -21,30 +22,38 @@ const useStyles = makeStyles((theme) => ({
 
 function Register() {
   const classes = useStyles();
+  const [dbMessage, setDbMessage] = useState("");
+  const [formData, setFormData] = useState({
+    username: "",
+    password: "",
+    firstname: "",
+    lastname: "",
+  });
 
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [firstname, setFirstname] = useState("");
-  const [lastname, setLastname] = useState("");
+  const handleChange = ({ target: { name, value } }) => {
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
 
   let history = useHistory();
 
   const register = () => {
-    Axios.post("http://localhost:3001/user/register", {
-      username: username,
-      password: password,
-      firstname: firstname,
-      lastname: lastname,
-    })
+    Axios.post("http://localhost:3001/user/register", formData)
       .then((response) => {
         console.log(response);
         //redirection sur la page de connexion
-        setTimeout(() => history.push("/login"), 2000);
+        setDbMessage(
+          "inscription validée ! redirection de la page en cours..."
+        );
+        setTimeout(() => history.push("/login"), 2500);
       })
-      .catch((error) => {
+      .catch(({ response }) => {
         // Affichage message d'erreur
-        console.error("Erreur", error.status, ":", error.statusText);
-        console.error("URL :", error.responseURL);
+        !utils.empty(response)
+          ? setDbMessage(`Erreur ${response.status} :  ${response.statusText}`)
+          : setDbMessage("");
       });
   };
 
@@ -66,9 +75,8 @@ function Register() {
           </InputLabel>
           <Input
             className="register-input"
-            onChange={(event) => {
-              setUsername(event.target.value);
-            }}
+            onChange={handleChange}
+            name="username"
             id="input-with-icon-adornment"
             startAdornment={
               <InputAdornment position="start">
@@ -98,9 +106,8 @@ function Register() {
             type="password"
             className="register-input"
             id="input-with-icon-adornment"
-            onChange={(event) => {
-              setPassword(event.target.value);
-            }}
+            onChange={handleChange}
+            name="password"
             startAdornment={
               <InputAdornment position="start">
                 <VpnKeyIcon
@@ -128,9 +135,8 @@ function Register() {
           <Input
             className="register-input"
             id="input-with-icon-adornment"
-            onChange={(event) => {
-              setLastname(event.target.value);
-            }}
+            onChange={handleChange}
+            name="lastname"
             startAdornment={
               <InputAdornment position="start">
                 <ContactsIcon
@@ -158,9 +164,8 @@ function Register() {
           <Input
             className="register-input"
             id="input-with-icon-adornment"
-            onChange={(event) => {
-              setFirstname(event.target.value);
-            }}
+            onChange={handleChange}
+            name="firstname"
             startAdornment={
               <InputAdornment position="start">
                 <ContactsIcon
@@ -187,6 +192,9 @@ function Register() {
         >
           Inscription
         </Button>
+      </div>
+      <div>
+        <p className="loggin-error-message">{dbMessage}</p>
       </div>
     </div>
   );

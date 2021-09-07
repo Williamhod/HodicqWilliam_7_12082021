@@ -33,17 +33,20 @@ GROUP BY p.id;
 */
 
 exports.readPosts = (req, res) => {
+  const { userId } = req.query;
+
   db.query(
     `
     SELECT p.*, u.firstname, u.lastname, COUNT(lp.postId) AS nbLikes, EXISTS(
       SELECT lp.postId
       FROM socialmedia.likes l
-      WHERE l.userId = 1
+      WHERE l.userId = ?
       AND l.postId = p.id) AS isLiked
     FROM socialmedia.post p
       INNER JOIN socialmedia.users u ON p.userid = u.id
       LEFT JOIN socialmedia.likes lp ON p.id = lp.postId
     GROUP BY p.id;`,
+    [userId],
     (err, results) => {
       if (err) {
         console.log(err);

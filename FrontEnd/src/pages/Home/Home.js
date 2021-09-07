@@ -4,13 +4,15 @@ import Axios from "axios";
 import { useLocation } from "react-router-dom";
 import Logobar from "../../images/Logo/icon-left-font.png";
 import { LoremIpsum } from "lorem-ipsum";
-import Post from "../../components/Post/Post2";
+import Post from "../../components/Post/Post";
 import LogoLoading from "../../images/Logo/icon.png";
 
 function Home() {
   const [posts, setPosts] = useState([]);
   const [loggedIn] = useState(JSON.parse(localStorage.getItem("loggedIn")));
   const location = useLocation();
+  const userId = localStorage.getItem("userid");
+  console.log(userId);
 
   const lorem = new LoremIpsum({
     sentencesPerParagraph: {
@@ -28,14 +30,14 @@ function Home() {
       localStorage.setItem("loggedIn", false);
     }
     if (localStorage.getItem("loggedIn", true)) {
-      Axios.get("http://localhost:3001/post")
+      Axios.get("http://localhost:3001/post?userId=" + userId)
         .then((res) => res.data)
         .then((res) => {
           setPosts(res);
           console.log(res);
         });
     }
-  }, [location]);
+  }, [location,userId]);
 
   const likeVal = [1, -1];
 
@@ -46,7 +48,7 @@ function Home() {
     lesPosts[i].isLiked = !lesPosts[i].isLiked;
 
     await Axios.post("http://localhost:3001/post/like", {
-      userId: 1,
+      userId: userId,
       postId: lesPosts[i].id,
       like: lesPosts[i].isLiked,
     }).then((response) => {
@@ -58,15 +60,17 @@ function Home() {
     <>
       {loggedIn ? (
         <div className="home">
-          <div  className="home-loggin">
-            {posts.map((post, key) => <Post post={post} key={key} index={key} likePost={likePost} />)}
+          <div className="home-loggin">
+            {posts.map((post, key) => (
+              <Post post={post} key={key} index={key} likePost={likePost} />
+            ))}
             <div>
-          <img
-              className="logo-homePage"
-              src={LogoLoading}
-              alt="Logo de l'entreprise"
-            />
-          </div>
+              <img
+                className="logo-homePage"
+                src={LogoLoading}
+                alt="Logo de l'entreprise"
+              />
+            </div>
           </div>
         </div>
       ) : (
