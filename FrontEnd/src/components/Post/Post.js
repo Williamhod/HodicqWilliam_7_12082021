@@ -59,12 +59,17 @@ function Post({ post, index, likePost }) {
   const [expanded, setExpanded] = React.useState(false);
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState([]);
+  const gotImage = post.image.length > 0;
 
   const userId = localStorage.getItem("userid");
   const postId = post.id;
 
   const getComments = () => {
-    Axios.get(`http://localhost:3001/post/${postId}/comments`)
+    Axios.get(`http://localhost:3001/post/${postId}/comments`, {
+      headers: {
+        "x-access-token": localStorage.getItem("token"),
+      },
+    })
       .then((res) => res.data)
       .then(({ results }) => {
         setComments(results);
@@ -73,11 +78,19 @@ function Post({ post, index, likePost }) {
   };
 
   const sendComment = () => {
-    Axios.post("http://localhost:3001/post/comment", {
-      userId: userId,
-      postId: postId,
-      comment: comment,
-    }).then((_res) => {
+    Axios.post(
+      "http://localhost:3001/post/comment",
+      {
+        userId: userId,
+        postId: postId,
+        comment: comment,
+      },
+      {
+        headers: {
+          "x-access-token": localStorage.getItem("token"),
+        },
+      }
+    ).then((_res) => {
       // setComments([...comments, comment]);
       getComments();
       setComment("");
@@ -114,12 +127,17 @@ function Post({ post, index, likePost }) {
           </Moment>
         }
       />
-      <CardMedia
-        className={classes.media}
-        image={`http://localhost:3001/${post.image}`}
-        title={post.title}
-      />
-      <CardContent>
+      {gotImage ? (
+        <CardMedia
+          className={classes.media}
+          image={`http://localhost:3001/${post.image}`}
+          title={post.title}
+        />
+      ) : (
+        <></>
+      )}
+
+      <CardContent className="post-description-container">
         <Typography variant="body2" color="textSecondary" component="p">
           {post.description}
         </Typography>
@@ -177,52 +195,16 @@ function Post({ post, index, likePost }) {
             </IconButton>
           </Paper>
           {comments.length ? (
-            comments.map((comment,key) => (
-              <Comment author={comment.author} key={key} content={comment.comment} />
+            comments.map((comment, key) => (
+              <Comment
+                author={comment.author}
+                key={key}
+                content={comment.comment}
+              />
             ))
           ) : (
             <p>Be The Very First one To comment</p>
           )}
-          {/* <Typography paragraph className="comment">
-            <p className="comment-content">
-              <span className="comment-provider">Hodicq William : </span>
-              Super cette image ! bla bla bla bla Lorem ipsum dolor, sit amet
-              consectetur adipisicing elit. Minus corporis sapiente pariatur
-              omnis modi quibusdam doloremque hic quos dignissimos dolore,
-              placeat ut sed aut culpa facilis aperiam alias velit temporibus
-              voluptates, quidem at sit recusandae.
-            </p>
-            <IconButton
-              aria-label="settings"
-              className="settings-comment-button"
-            >
-              <MoreHorizIcon />
-            </IconButton>
-          </Typography>
-          <Typography paragraph className="comment">
-            <p className="comment-content">
-              <span className="comment-provider">Forth :</span> Mwé, tu peux
-              mieux faire hein !
-            </p>
-            <IconButton
-              aria-label="settings"
-              className="settings-comment-button"
-            >
-              <MoreHorizIcon />
-            </IconButton>
-          </Typography>
-          <Typography paragraph className="comment">
-            <p className="comment-content">
-              <span className="comment-provider">Nono :</span> Rhooo Vincent !
-              Soit Gentil !
-            </p>
-            <IconButton
-              aria-label="settings"
-              className="settings-comment-button"
-            >
-              <MoreHorizIcon />
-            </IconButton>
-          </Typography> */}
         </CardContent>
       </Collapse>
     </Card>

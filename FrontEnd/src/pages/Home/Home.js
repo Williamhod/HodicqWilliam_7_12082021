@@ -30,7 +30,11 @@ function Home() {
       localStorage.setItem("loggedIn", false);
     }
     if (localStorage.getItem("loggedIn", true)) {
-      Axios.get("http://localhost:3001/post?userId=" + userId)
+      Axios.get("http://localhost:3001/post?userId=" + userId, {
+        headers: {
+          "x-access-token": localStorage.getItem("token"),
+        },
+      })
         .then((res) => res.data)
         .then((res) => {
           setPosts(res);
@@ -51,6 +55,10 @@ function Home() {
       userId: userId,
       postId: lesPosts[i].id,
       like: lesPosts[i].isLiked,
+    }, {
+      headers: {
+        "x-access-token": localStorage.getItem("token"),
+      },
     }).then((response) => {
       setPosts(lesPosts);
     });

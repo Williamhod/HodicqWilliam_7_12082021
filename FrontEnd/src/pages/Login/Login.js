@@ -13,6 +13,7 @@ import AccountCircle from "@material-ui/icons/AccountCircle";
 import Button from "@material-ui/core/Button";
 import VpnKeyIcon from "@material-ui/icons/VpnKey";
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";
+import Auth from "../../components/Auth/Auth";
 
 const useStyles = makeStyles((theme) => ({
   margin: {
@@ -31,19 +32,25 @@ function Login() {
   let history = useHistory();
 
   const login = () => {
-    Axios.post("http://localhost:3001/user/login", {
-      // http://localhost:3001
-      // Axios.post(`${process.env.URL_BACK}/user/login`, {
-      username: username,
-      password: password,
-    }).then((response) => {
-      if (response.data.loggedIn) {
+    Axios.post(
+      "http://localhost:3001/user/login",
+      {
+        // http://localhost:3001
+        // Axios.post(`${process.env.URL_BACK}/user/login`, {
+        username: username,
+        password: password,
+      },
+      { withCredentials: true }
+    )
+    .then(({ data }) => {
+      if (data.loggedIn) {
         localStorage.setItem("loggedIn", true);
-        localStorage.setItem("username", response.data.username);
-        localStorage.setItem("userid", response.data.id);
+        localStorage.setItem("username", data.username);
+        localStorage.setItem("userid", data.id);
+        Auth(data.token);
         history.push("/");
       } else {
-        setErrorMessage(response.data.message);
+        setErrorMessage(data.message);
       }
     });
   };

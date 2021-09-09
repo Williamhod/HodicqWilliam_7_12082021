@@ -1,8 +1,11 @@
 const db = require("../config/db");
 
-exports.signup = (req, res, next) => {
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+
+exports.signup = async (req, res, next) => {
   const username = req.body.username;
-  const password = req.body.password;
+  const password = await bcrypt.hash(req.body.password, 10);
   const firstname = req.body.firstname;
   const lastname = req.body.lastname;
   const avatar = "null";
@@ -19,21 +22,6 @@ exports.signup = (req, res, next) => {
   );
 };
 
-/*exports.signup = (req, res, next) => {
-    bcrypt.hash(req.body.password, 10)
-      .then(hash => {
-        const user = new User({
-          email: mailCryptor(req.body.email),
-          password: hash
-        });
-        user.save()
-          .then(() => res.status(201).json({ message: 'Utilisateur créé !' })) //status 201 pour une création de ressource
-          .catch(error => res.status(400).json({ error }));
-      })
-      .catch(error => res.status(500).json({ error }));
-};
-*/
-
 exports.login = (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
@@ -46,8 +34,33 @@ exports.login = (req, res) => {
         console.log(err);
       }
       if (results.length > 0) {
-        if (password === results[0].password) {
-          res.json({ loggedIn: true, username: username, id: results[0].id });
+        if (bcrypt.compare(password, results[0].password)) {
+          const token = jwt.sign(
+            {
+              userId: results[0].id,
+              username: results[0].username,
+              firstname: results[0].firstname,
+              lastname: results[0].lastname,
+              isAdmin: results[0].isAdmin,
+            },
+
+            process.env.SECRET_TOKEN,
+
+            { expiresIn: "2h" }
+          );
+          res
+            .cookie("token", token, { httpOnly: true, maxAge: 900000 })
+            //.send();
+            .json({
+              auth: true,
+              loggedIn: true,
+              username: username,
+              id: results[0].id,
+              userId: results[0].id,
+              isAdmin: results[0].isAdmin,
+              token: token,
+            })
+            .send();
         } else {
           res.json({
             loggedIn: false,
@@ -60,39 +73,6 @@ exports.login = (req, res) => {
     }
   );
 };
-
-/*exports.login = (req, res, next) => {
-    User.findOne({ email: mailCryptor(req.body.email) })
-      .then(user => {
-        if (!user) {
-          return res.status(401).json({ error: 'Utilisateur non trouvé !' });
-        }
-        bcrypt.compare(req.body.password, user.password)
-          .then(valid => {
-            if (!valid) {
-              return res.status(401).json({ error: 'Mot de passe incorrect !' });
-            }
-            res.status(200).json({
-              userId: user._id,
-              token: jwt.sign(
-                { userId: user._id },
-                process.env.SECRET_TOKEN,
-                //chaine de caractère ici très simple mais ne pro qui sera bien plus longue et complexe
-                { expiresIn: '4h' }
-                //le token n'est valable que durant 4h
-              )
-              
-              *cette solution de token permet comme pour la creation de nouveau objet , 
-              *si on realise un objet avec un user, il ne pourra etre modifier par un autre, 
-              *ce user id encoder sera utilise justement pour appliquer le bon user id sur chaque objet
-              
-            });
-          })
-          .catch(error => res.status(500).json({ error }));
-      })
-      .catch(error => res.status(500).json({ error }));
-};
-*/
 
 exports.userProfil = (req, res) => {
   const username = req.params.username;

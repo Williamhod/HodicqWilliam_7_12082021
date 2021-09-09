@@ -1,5 +1,6 @@
 //declaration 
 const express = require("express");
+
 const cors = require('cors');
 
 const app = express();
@@ -23,11 +24,11 @@ const morgan = require('morgan')
  **  Header - Setup    *
  **********************/
 
-  app.use((_req, res, next) => {
+ /* app.use((_req, res, next) => {
     res.setHeader(`Access-Control-Allow-Origin`, process.env.HostFront); // Only our website have headers access
     res.setHeader(
       "Access-Control-Allow-Headers",
-     "Origin, X-Requested-With, Content, Accept, Content-Type, Authorization"
+     "Origin, X-Requested-With, Content, Accept, Content-Type, Authorization, x-access-token"
     );
     res.setHeader(
       "Access-Control-Allow-Methods",
@@ -35,11 +36,14 @@ const morgan = require('morgan')
     );
     next();
    });
+*/
 
 let corsOptions = {
   origin: process.env.HostFront,
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true,
 }
- 
+
 // route utilisateurs pour stockage db 
 const userRoutes = require('./routes/User.rt')
 const postRoutes = require('./routes/Post.rt')
@@ -52,7 +56,7 @@ const postRoutes = require('./routes/Post.rt')
 // Middlewares
 app.use(express.json({ extended: true }))
 app.use(express.urlencoded({ extended: true }));
-app.use(cors());
+//app.use(cors());
 app.use(cors(corsOptions));
 app.use(nocache());
 app.use(helmet());

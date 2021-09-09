@@ -21,17 +21,6 @@ exports.createPost = (req, res) => {
   );
 };
 
-/*
-SELECT p.*, u.firstname, u.lastname, COUNT(lp.postId) AS nbLikes, EXISTS(SELECT lp.postId
-FROM socialmedia.likes lp
-WHERE lp.userId = 1
-AND p.id = lp.postId) AS isLiked
-FROM socialmedia.post p
-INNER JOIN socialmedia.users u ON p.userid = u.id
-LEFT JOIN socialmedia.likes lp ON p.id = lp.postId
-GROUP BY p.id;
-*/
-
 exports.readPosts = (req, res) => {
   const { userId } = req.query;
 
@@ -45,7 +34,8 @@ exports.readPosts = (req, res) => {
     FROM socialmedia.post p
       INNER JOIN socialmedia.users u ON p.userid = u.id
       LEFT JOIN socialmedia.likes lp ON p.id = lp.postId
-    GROUP BY p.id;`,
+    GROUP BY p.id
+    ORDER by p.created_at desc`,
     [userId],
     (err, results) => {
       if (err) {
