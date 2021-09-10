@@ -7,22 +7,36 @@ import Navbar from "./components/Navbar/Navbar";
 import Post from "./pages/Post/Post";
 import Profile from "./pages/Profile/Profile";
 import Footer from "./components/Footer/Footer";
+import axios from "axios";
+import AuthContext from "./context/AuthContext";
+import { useContext } from "react";
+
+//to accept cookie
+axios.defaults.withCredentials = true;
 
 function App() {
+  const { loggedIn } = useContext(AuthContext);
   return (
-    <>
       <Router>
-      <Navbar />
+        <Navbar />
         <Switch>
           <Route path="/" exact component={Home} />
-          <Route path="/register" exact component={Register} />
-          <Route path="/login" exact component={Login} />
-          <Route path="/post" exact component={Post} />
-          <Route path="/profile" exact component={Profile} />
+
+          {loggedIn === false && (
+            <>
+              <Route path="/register" exact component={Register} />
+              <Route path="/login" exact component={Login} />
+            </>
+          )}
+          {loggedIn === true && (
+            <>
+              <Route path="/post" exact component={Post} />
+              <Route path="/profile" exact component={Profile} />
+            </>
+          )}
         </Switch>
         <Footer />
       </Router>
-    </>
   );
 }
 

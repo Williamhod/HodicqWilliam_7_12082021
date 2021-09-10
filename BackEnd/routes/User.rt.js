@@ -7,6 +7,9 @@ const user = require ("../controllers/User.ctrl")
 
 router.post("/register",verifyPassword, user.signup);
 router.post("/login", user.login);
+router.get("/loggedIn", user.loggedIn);
+router.get("/logout", user.logout);
+
 
 router.get("/profile/:username", user.userProfil);
 

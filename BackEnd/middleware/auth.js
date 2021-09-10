@@ -1,8 +1,9 @@
-const jwt = require('jsonwebtoken');
+const jwt = require("jsonwebtoken");
 
 /*module.exports = (req, res, next) => {
   try {
-    const token = req.headers.authorization.split(' ')[1];
+    const token = req.headers["x-access-token"]
+      //.authorization.split(' ')[1];
     const decodedToken = jwt.verify(token, process.env.SECRET_TOKEN);
     const userId = decodedToken.userId;
     if (req.body.userId && req.body.userId !== userId) {
@@ -18,7 +19,7 @@ const jwt = require('jsonwebtoken');
 };
 */
 
-module.exports = (req, res, next) => {
+/*module.exports = (req, res, next) => {
   const token = req.headers["x-access-token"];
 
   if (!token) {
@@ -34,4 +35,18 @@ module.exports = (req, res, next) => {
     })
   }
   
+};
+*/
+
+module.exports = (req, res, next) => {
+  try {
+    const token = req.cookies.token;
+    if (!token) return res.status(401).json({ message: Unauthorized });
+    const verified = jwt.verify(token, process.env.SECRET_TOKEN);
+    req.user = verified.user;
+    next()
+  } catch (err) {
+    console.error(err);
+    res.status(401).json({ message: "unauthorized" });
+  }
 };

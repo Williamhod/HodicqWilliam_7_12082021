@@ -12,6 +12,9 @@ import Menu from "@material-ui/core/Menu";
 import Button from "@material-ui/core/Button";
 import { withRouter, useLocation } from "react-router-dom";
 import { useMediaQuery } from "@material-ui/core";
+import Axios from "axios";
+import { useContext } from "react";
+import AuthContext from "../../context/AuthContext";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -19,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
     position: "sticky!important",
     top: "0",
     width: "calc(100vw + 10px)",
-    zIndex:999,
+    zIndex: 999,
   },
   menuButton: {
     marginRight: theme.spacing(0),
@@ -33,30 +36,10 @@ const useStyles = makeStyles((theme) => ({
 
 function Navbar(props) {
   const { history } = props;
-  const [loggedIn, setLoggedIn] = useState(
-    JSON.parse(localStorage.getItem("loggedIn"))
-  );
-  const location = useLocation();
+  const { loggedIn, getLoggedIn } = useContext(AuthContext);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("xs"));
   const isTab = useMediaQuery(theme.breakpoints.down("sm"));
-
-  function setLogged() {
-    const item = localStorage.getItem("loggedIn");
-
-    if (item) {
-      setLoggedIn(JSON.parse(item));
-    }
-  }
-  useEffect(() => {
-    window.addEventListener("storage", () => setLogged());
-
-    setLogged();
-
-    return () => {
-      window.removeEventListener("storage", setLogged);
-    };
-  }, [location]);
 
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -80,19 +63,19 @@ function Navbar(props) {
       id: 1,
       menuTitle: "Publier",
       pageURL: "/post",
-      loggin: "nul",
+      disconnect: false,
     },
     {
       id: 2,
       menuTitle: "Profil",
       pageURL: "/profile",
-      loggin: "nul",
+      disconnect: false,
     },
     {
       id: 3,
       menuTitle: "Déconnexion",
       pageURL: "/login",
-      loggin: false,
+      disconnect: true,
     },
   ];
 
@@ -101,28 +84,34 @@ function Navbar(props) {
       id: 4,
       menuTitle: "Accueil",
       pageURL: "/",
-      loggin: "nul",
+      disconnect: false,
     },
     {
       id: 5,
       menuTitle: "Inscription",
       pageURL: "/register",
-      loggin: "nul",
+      disconnect: false,
     },
     {
       id: 6,
       menuTitle: "Connexion",
       pageURL: "/login",
-      loggin: "nul",
+      disconnect: false,
     },
   ];
 
-  const disconnect = (pageURL,loggin) => {
-    handleButtonClick(pageURL);
-    if (loggin === false) {
+  const changeUrl = async (pageURL, disconnect) => {
+    console.log("disconnect", disconnect);
+    if (disconnect) {
       localStorage.clear();
-      window.location.reload(false);
+      await Axios.get("http://localhost:3001/user/logout")
+      // window.location.reload(false);
+      .then(console.log)
+      .then(() => getLoggedIn())
+      // .then(() => handleButtonClick(pageURL));
     }
+      handleButtonClick(pageURL);
+    // }
   };
 
   //ajust menu link by loggin statement
@@ -194,12 +183,12 @@ function Navbar(props) {
             ) : (
               <div className="Navbar-Button-container">
                 {menuItems.map((menuItem) => {
-                  const { id,menuTitle, pageURL, loggin } = menuItem;
+                  const { id, menuTitle, pageURL, disconnect } = menuItem;
                   return (
                     <Button
                       className="Navbar-Button"
                       key={id}
-                      onClick={()=>disconnect(pageURL,loggin)}
+                      onClick={() => changeUrl(pageURL, disconnect)}
                     >
                       {menuTitle}
                     </Button>

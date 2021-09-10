@@ -33,6 +33,11 @@ exports.login = (req, res) => {
       if (err) {
         console.log(err);
       }
+      if (!username || !password) {
+        return res.json({
+          message: "Merci de bien complèter les champs de connexion",
+        });
+      }
       if (results.length > 0) {
         if (bcrypt.compare(password, results[0].password)) {
           const token = jwt.sign(
@@ -72,6 +77,26 @@ exports.login = (req, res) => {
       }
     }
   );
+};
+
+exports.logout = (req, res) => {
+  res.cookie("token", "", { httpOnly: true, expires: new Date(0) }).send();
+};
+
+exports.loggedIn = (req, res) => {
+  try {
+    const token = req.cookies.token;
+
+    console.log(req.cookies, req.cookies.token)
+
+    if (!token) return res.send(false);
+
+    jwt.verify(token, process.env.SECRET_TOKEN);
+
+    res.send(true);
+  } catch (err) {
+    res.send(false);
+  }
 };
 
 exports.userProfil = (req, res) => {

@@ -4,6 +4,8 @@ const express = require("express");
 const cors = require('cors');
 
 const app = express();
+//read cookie
+const cookieParser = require('cookie-parser');
 
 //use for file way (path)
 const path = require('path');
@@ -40,7 +42,7 @@ const morgan = require('morgan')
 
 let corsOptions = {
   origin: process.env.HostFront,
-  methods: ["GET", "POST", "PUT", "DELETE"],
+  // methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true,
 }
 
@@ -62,7 +64,7 @@ app.use(nocache());
 app.use(helmet());
 app.use(morgan('tiny'));
 app.use('/images', express.static(path.join(__dirname, 'images')));
-
+app.use(cookieParser());
 // Routes
 app.use("/user",rateLimit, userRoutes);
 app.use("/post",rateLimit, postRoutes);

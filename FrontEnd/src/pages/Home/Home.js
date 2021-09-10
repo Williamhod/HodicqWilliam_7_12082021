@@ -6,10 +6,12 @@ import Logobar from "../../images/Logo/icon-left-font.png";
 import { LoremIpsum } from "lorem-ipsum";
 import Post from "../../components/Post/Post";
 import LogoLoading from "../../images/Logo/icon.png";
+import AuthContext from "../../context/AuthContext";
+import { useContext } from "react";
 
 function Home() {
   const [posts, setPosts] = useState([]);
-  const [loggedIn] = useState(JSON.parse(localStorage.getItem("loggedIn")));
+  const { loggedIn } = useContext(AuthContext);
   const location = useLocation();
   const userId = localStorage.getItem("userid");
   console.log(userId);
@@ -26,10 +28,9 @@ function Home() {
   });
 
   useEffect(() => {
-    if (!localStorage.getItem("loggedIn")) {
-      localStorage.setItem("loggedIn", false);
+    if (loggedIn === false) {
     }
-    if (localStorage.getItem("loggedIn", true)) {
+    if (loggedIn === true) {
       Axios.get("http://localhost:3001/post?userId=" + userId, {
         headers: {
           "x-access-token": localStorage.getItem("token"),
@@ -41,7 +42,7 @@ function Home() {
           console.log(res);
         });
     }
-  }, [location,userId]);
+  }, [location, loggedIn, userId]);
 
   const likeVal = [1, -1];
 
@@ -51,15 +52,19 @@ function Home() {
     lesPosts[i].nbLikes += likeVal[+lesPosts[i].isLiked];
     lesPosts[i].isLiked = !lesPosts[i].isLiked;
 
-    await Axios.post("http://localhost:3001/post/like", {
-      userId: userId,
-      postId: lesPosts[i].id,
-      like: lesPosts[i].isLiked,
-    }, {
-      headers: {
-        "x-access-token": localStorage.getItem("token"),
+    await Axios.post(
+      "http://localhost:3001/post/like",
+      {
+        userId: userId,
+        postId: lesPosts[i].id,
+        like: lesPosts[i].isLiked,
       },
-    }).then((response) => {
+      {
+        headers: {
+          "x-access-token": localStorage.getItem("token"),
+        },
+      }
+    ).then((response) => {
       setPosts(lesPosts);
     });
   };

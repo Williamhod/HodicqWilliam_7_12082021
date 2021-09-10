@@ -14,6 +14,8 @@ import Button from "@material-ui/core/Button";
 import VpnKeyIcon from "@material-ui/icons/VpnKey";
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";
 import Auth from "../../components/Auth/Auth";
+import { useContext } from "react";
+import AuthContext from "../../context/AuthContext";
 
 const useStyles = makeStyles((theme) => ({
   margin: {
@@ -23,6 +25,7 @@ const useStyles = makeStyles((theme) => ({
 
 function Login() {
   const classes = useStyles();
+  const { getLoggedIn} = useContext(AuthContext);
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -32,27 +35,23 @@ function Login() {
   let history = useHistory();
 
   const login = () => {
-    Axios.post(
-      "http://localhost:3001/user/login",
-      {
-        // http://localhost:3001
-        // Axios.post(`${process.env.URL_BACK}/user/login`, {
-        username: username,
-        password: password,
-      },
-      { withCredentials: true }
-    )
+    Axios.post("http://localhost:3001/user/login", {
+      username: username,
+      password: password,
+    })
     .then(({ data }) => {
       if (data.loggedIn) {
-        localStorage.setItem("loggedIn", true);
         localStorage.setItem("username", data.username);
         localStorage.setItem("userid", data.id);
         Auth(data.token);
-        history.push("/");
+        // history.push("/");
       } else {
         setErrorMessage(data.message);
       }
-    });
+    })
+    .then(() => getLoggedIn())
+    .then(() => history.push("/"));
+
   };
 
   return (
