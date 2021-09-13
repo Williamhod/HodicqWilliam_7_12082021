@@ -41,19 +41,30 @@ exports.checkUser = (req, res, next) => {
     const token = req.cookies.token;
     if (!token) res.locals.user = null;
 
+    //check token to auth routes
     const verified = jwt.verify(token, process.env.SECRET_TOKEN);
     const { iat, exp, ...user } = verified;
     res.locals.user = user;
 
+    //after any request refresh timer cookie and token
+
+    const newToken = jwt.sign(
+      user,
+      process.env.SECRET_TOKEN,
+      { expiresIn: "1h" }
+    );
+    res.cookie("token", newToken, { httpOnly: true, maxAge: 3600000 });
   } catch (err) {
     res.locals.user = null;
   }
-  
+
   next();
-}
+};
 
 exports.checkAuth = (req, res, next) => {
-  if (!res.locals.user) return res.status(401).json({ message: "Unauthorized" });
+  // if we dont have locals.user that on is unauthorized 
+  if (!res.locals.user)
+    return res.status(401).json({ message: "Unauthorized" });
 
   next();
-}
+};

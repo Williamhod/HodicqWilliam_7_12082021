@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import "./Navbar.scss";
 import LogoNavbarMobile from "../../images/Logo/icon.png";
 import LogoNavbarDesk from "../../images/Logo/icon-left-font.png";
@@ -10,7 +10,7 @@ import MenuIcon from "@material-ui/icons/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
 import Button from "@material-ui/core/Button";
-import { withRouter, useLocation } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import { useMediaQuery } from "@material-ui/core";
 import Axios from "axios";
 import { useContext } from "react";

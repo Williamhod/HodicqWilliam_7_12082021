@@ -62,8 +62,10 @@ function Post({ post, index, likePost }) {
   const [comments, setComments] = useState([]);
   const gotImage = post.image.length > 0;
 
-  const { connexion:{user} } = useContext(AuthContext);
-  
+  const {
+    connexion: { user },
+  } = useContext(AuthContext);
+
   const postId = post.id;
 
   const getComments = () => {
@@ -105,9 +107,13 @@ function Post({ post, index, likePost }) {
           </Avatar>
         }
         action={
-          <IconButton aria-label="settings">
-            <MoreVertIcon />
-          </IconButton>
+          user.userId === post.userId || !!user.isAdmin === true ?  (
+            <IconButton aria-label="settings">
+              <MoreVertIcon />
+            </IconButton>
+          ) : (
+              <></>
+          )
         }
         title={`${post.title} by @${post.lastname} ${post.firstname}`}
         subheader={
@@ -187,6 +193,7 @@ function Post({ post, index, likePost }) {
             comments.map((comment, key) => (
               <Comment
                 author={comment.author}
+                userId={comment.userId}
                 key={key}
                 content={comment.comment}
               />

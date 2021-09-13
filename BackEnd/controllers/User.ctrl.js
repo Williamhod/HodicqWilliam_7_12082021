@@ -53,9 +53,10 @@ exports.login =  (req, res) => {
 
             process.env.SECRET_TOKEN,
 
-            { expiresIn: "2h" }
+            { expiresIn: "1h" }
           );
-          res.cookie("token", token, { httpOnly: true, maxAge: 900000 }).send();
+          //realisation d'un cookie d'une durée max d'une heure  et ne pouvant etre modifié 
+          res.cookie("token", token, { httpOnly: true, maxAge: 3600000 }).send();
         } else {
           res.json({
             loggedIn: false,
