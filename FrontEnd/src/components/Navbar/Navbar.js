@@ -60,21 +60,19 @@ function Navbar(props) {
   };
 
   
-
+//call server for fisconnection button to set up cookie to nul 
   const changeUrl = async (pageURL, disconnect) => {
     console.log("disconnect", disconnect);
     if (disconnect) {
       await Axios.get("http://localhost:3001/user/logout")
-      // window.location.reload(false);
       .then(console.log)
       .then(() => getConnexion())
-      // .then(() => handleButtonClick(pageURL));
     }
       handleButtonClick(pageURL);
     // }
   };
 
-  //ajust menu link by loggin statement
+  //ajust menu link by loggin statement/ menu item is contained on data menufile
   const menuItems = connexion.loggedIn ? menuItemsLogged : menuItemsNotLogged;
 
   //Ajust the logo by the screen size
@@ -101,6 +99,7 @@ function Navbar(props) {
             />
           </div>
           <div className="Navbar-Button-Container">
+            {/*if it's mobile navbar gonna change design setup */}
             {isMobile ? (
               <>
                 <IconButton
@@ -141,6 +140,7 @@ function Navbar(props) {
                 </Menu>
               </>
             ) : (
+                // set up for desktop navbar 
               <div className="Navbar-Button-container">
                 {menuItems.map((menuItem) => {
                   const { id, menuTitle, pageURL, disconnect } = menuItem;

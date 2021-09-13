@@ -1,6 +1,10 @@
 const passwordSchema = require('../models/password.js');
 
+/****************************
+ **  Password controller    *
+ ***************************/
 
+ //from modele check the register password to make sure is strong enought 
 
 module.exports = (req, res, next) => {
     if (!passwordSchema.validate(req.body.password)) {

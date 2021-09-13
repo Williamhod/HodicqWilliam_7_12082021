@@ -3,6 +3,10 @@ const db = require("../config/db");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
+/*****************
+ **    Register  *
+ *****************/
+
 exports.signup = async (req, res) => {
   const username = req.body.username;
   console.log('passeword dans l attente d un verify passeword', req.body.password)
@@ -22,6 +26,11 @@ exports.signup = async (req, res) => {
     }
   );
 };
+
+
+/**************
+ **   Login   *
+ *************/
 
 exports.login =  (req, res) => {
   const username = req.body.username;
@@ -55,7 +64,7 @@ exports.login =  (req, res) => {
 
             { expiresIn: "1h" }
           );
-          //realisation d'un cookie d'une durée max d'une heure  et ne pouvant etre modifié 
+          //Set up token and cookie that can be change from browser and up to 1h
           res.cookie("token", token, { httpOnly: true, maxAge: 3600000 }).send();
         } else {
           res.json({
@@ -70,9 +79,21 @@ exports.login =  (req, res) => {
   );
 };
 
+/*********************
+ **    Disconnection *
+ *********************/
+
+ // For DC we remove content in cookie then change date to past 
 exports.logout = (req, res) => {
   res.cookie("token", "", { httpOnly: true, expires: new Date(0) }).send();
 };
+
+
+
+/******************************
+ **   log statement for front *
+ ******************************/
+//Send loggedIn statement to true or false to realise a front context 
 
 exports.loggedIn = (req, res) => {
   try {
@@ -89,6 +110,11 @@ exports.loggedIn = (req, res) => {
     res.send(defaultState);
   }
 };
+
+
+/********************************
+ **  Profil -- work in progress *
+ *******************************/
 
 exports.userProfil = (req, res) => {
   const username = req.params.username;

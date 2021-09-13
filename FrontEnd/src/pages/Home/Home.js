@@ -17,6 +17,7 @@ function Home() {
   const location = useLocation();
   const userId = user?.userId;
 
+  //this dependance is use for lorem auto sentence and lighten the code
   const lorem = new LoremIpsum({
     sentencesPerParagraph: {
       max: 8,
@@ -27,7 +28,7 @@ function Home() {
       min: 4,
     },
   });
-
+  //this use effect is use to verified the context of connexion and realize the call to get posts
   useEffect(() => {
     if (loggedIn === false) {
     }
@@ -42,7 +43,7 @@ function Home() {
   }, [location, loggedIn, userId]);
 
   const likeVal = [1, -1];
-
+  // function use to adapte front about user like and realise call on db server to increment or remove the like
   const likePost = async (i) => {
     const lesPosts = [...posts];
 
@@ -59,6 +60,7 @@ function Home() {
   };
 
   return (
+    //home page if context return true about connexion
     <>
       {loggedIn ? (
         <div className="home">
@@ -80,6 +82,7 @@ function Home() {
           </div>
         </div>
       ) : (
+        //home page when context return false about connexion
         <div className="home">
           <div className="home-notloggin">
             <div className="home-notloggin-main">

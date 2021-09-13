@@ -26,6 +26,9 @@ import "moment/locale/fr";
 import Axios from "axios";
 import AuthContext from "../../context/AuthContext";
 
+//this compenent set up all cards for the post he also connected with  comments compenents
+//The card adapt them self about picture content or not with a simple condition 
+
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: "#fff9",

@@ -12,18 +12,22 @@ const multer = require('../middleware/multer-config');
 const sharp = require('../middleware/sharp-config');
 const jimp= require('../middleware/jimp-config');
 
-// router.get("/",auth, ctrl.readPosts);
+
+//get elements
 router.get("/",checkAuth, ctrl.readPosts);
+router.get("/:id/comments", checkAuth, ctrl.getComments);
 
-// auth
-// router.post("/",auth, multer, ctrl.createPost);
-// router.post("/like",auth, ctrl.likePost);
-// router.post("/comment",auth, ctrl.sendComment);
-// router.get("/:id/comments", auth, ctrl.getComments);
-
+//post elements
 router.post("/",checkAuth, multer, ctrl.createPost);
 router.post("/like",checkAuth, ctrl.likePost);
 router.post("/comment",checkAuth, ctrl.sendComment);
-router.get("/:id/comments", checkAuth, ctrl.getComments);
+
+//remove elements
+router.delete("/delete", checkAuth, ctrl.removePost);
+router.delete("/comment/delete",checkAuth, ctrl.removeComment);
+
+
+
+
 
 module.exports = router;

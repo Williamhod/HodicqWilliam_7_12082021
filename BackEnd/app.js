@@ -26,20 +26,6 @@ const morgan = require('morgan')
  **  Header - Setup    *
  **********************/
 
- /* app.use((_req, res, next) => {
-    res.setHeader(`Access-Control-Allow-Origin`, process.env.HostFront); // Only our website have headers access
-    res.setHeader(
-      "Access-Control-Allow-Headers",
-     "Origin, X-Requested-With, Content, Accept, Content-Type, Authorization, x-access-token"
-    );
-    res.setHeader(
-      "Access-Control-Allow-Methods",
-      "GET, POST, PUT, DELETE, PATCH, OPTIONS"
-    );
-    next();
-   });
-*/
-
 let corsOptions = {
   origin: process.env.HostFront,
   // methods: ["GET", "POST", "PUT", "DELETE"],

@@ -1,3 +1,4 @@
+//There items are use to for navbar to provide irl, title and be able to use dc function with disconnect item 
 export const menuItemsLogged = [
   {
     id: 1,

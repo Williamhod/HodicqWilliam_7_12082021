@@ -1,5 +1,5 @@
 /*****************************************
- ** Model - Password norme messages *
+ ** Model - Password norme messages      *
  ****************************************/
 const passwordValidator = require('password-validator');
 

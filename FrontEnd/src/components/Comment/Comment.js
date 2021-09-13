@@ -2,7 +2,10 @@ import { IconButton, Typography } from "@material-ui/core";
 import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
 import React, { useContext } from "react";
 import AuthContext from "../../context/AuthContext";
-
+/**
+ * Here is comments components who a get data response to set up it
+ * Only comment user or admin can get the possibility to remove a comment
+ */
 function Comment({ author, content, userId }) {
   const {
     connexion: { user },

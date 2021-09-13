@@ -1,5 +1,10 @@
 const multer = require('multer');
 
+/****************************
+ **  Files    controller    *
+ ***************************/
+
+// file type accepted 
 //prettier-ignore
 const MIME_TYPES = {
     'image/jpg' : 'jpg',
@@ -8,7 +13,7 @@ const MIME_TYPES = {
     'image/gif' : 'gif',
 };
 
-//dictionnaire des type de fichier pris par le front jpeg qui sera traduis en jpg
+
 
 const storage = multer.diskStorage({
     destination: (_req, _file, callback) => {

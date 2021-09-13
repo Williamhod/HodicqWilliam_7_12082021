@@ -1,9 +1,13 @@
 const db = require("../config/db");
 
+/*****************************************************
+ **    Post elements creation / read and remove      *
+ ****************************************************/
+
 exports.createPost = (req, res) => {
   const image = req.body.image;
   const { title, description } = req.body;
-  const {userId} = res.locals.user;
+  const { userId } = res.locals.user;
 
   let imageUrl = "";
   if (req.file) {
@@ -23,8 +27,7 @@ exports.createPost = (req, res) => {
 };
 
 exports.readPosts = (req, res) => {
-  const {userId} = res.locals.user;
-  
+  const { userId } = res.locals.user;
 
   db.query(
     `
@@ -48,12 +51,28 @@ exports.readPosts = (req, res) => {
   );
 };
 
+exports.removePost = (req, res) => {
+  const postId = req.params.id;
+  const isAdmin = res.locals.isAdmin;
+
+  db.query("DELETE FROM posts WHERE posts.id = ?", postId, (err, results) => {
+    if (err) {
+      console.log(err);
+    }
+    res.status(200).json({ results });
+  });
+};
+
+/*******************************************
+ **    Likes element creation / remove      *
+ *******************************************/
+
 exports.likePost = (req, res) => {
   const { postId, like } = req.body;
-  const {userId} = res.locals.user;
+  const { userId } = res.locals.user;
 
-  if (!userId) return res.status(401).json({ errorMessage: 'Non autorisé' })
-  
+  if (!userId) return res.status(401).json({ errorMessage: "Non autorisé" });
+
   let query = "";
   if (like) {
     query = "INSERT INTO Likes (userId, postId) VALUES (?,?)";
@@ -67,6 +86,10 @@ exports.likePost = (req, res) => {
     res.status(200).json({ result: "ok" });
   });
 };
+
+/*****************************************************
+ **    Comments elements creation /read/ remove      *
+ *****************************************************/
 
 exports.getComments = (req, res) => {
   const postId = req.params.id;
@@ -88,7 +111,7 @@ exports.getComments = (req, res) => {
 
 exports.sendComment = (req, res) => {
   const { postId, comment } = req.body;
-  const {userId} = res.locals.user;
+  const { userId } = res.locals.user;
 
   db.query(
     "INSERT INTO comments (userId, postId,comment) VALUES (?,?,?)",
@@ -97,7 +120,23 @@ exports.sendComment = (req, res) => {
       if (err) {
         console.log(err);
       }
-      res.status(200).json({ result: "ok" });
+      res.status(200).json({ results: "ok" });
+    }
+  );
+};
+
+exports.removeComment = (req, res) => {
+  const commentId = req.params.id;
+  const isAdmin = res.locals.isAdmin;
+
+  db.query(
+    `DELETE FROM comments WHERE comments.id = ?`,
+    commentId,
+    (err, results) => {
+      if (err) {
+        console.log(err);
+      }
+      res.status(200).json({ results });
     }
   );
 };
