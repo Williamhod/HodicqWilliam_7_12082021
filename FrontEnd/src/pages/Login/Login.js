@@ -13,7 +13,6 @@ import AccountCircle from "@material-ui/icons/AccountCircle";
 import Button from "@material-ui/core/Button";
 import VpnKeyIcon from "@material-ui/icons/VpnKey";
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";
-import Auth from "../../components/Auth/Auth";
 import { useContext } from "react";
 import AuthContext from "../../context/AuthContext";
 
@@ -25,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
 
 function Login() {
   const classes = useStyles();
-  const { getLoggedIn} = useContext(AuthContext);
+  const { getConnexion} = useContext(AuthContext);
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -39,18 +38,14 @@ function Login() {
       username: username,
       password: password,
     })
-    .then(({ data }) => {
-      if (data.loggedIn) {
-        localStorage.setItem("username", data.username);
-        localStorage.setItem("userid", data.id);
-        Auth(data.token);
-        // history.push("/");
-      } else {
-        setErrorMessage(data.message);
-      }
-    })
-    .then(() => getLoggedIn())
-    .then(() => history.push("/"));
+      .then(({ data }) => {
+        if (data.message) {
+          setErrorMessage(data.message);
+        } else {
+          getConnexion();
+          history.push("/")
+        }
+      });
 
   };
 

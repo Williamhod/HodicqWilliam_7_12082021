@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
 import Card from "@material-ui/core/Card";
@@ -24,6 +24,7 @@ import Moment from "react-moment";
 import "moment/locale/fr";
 
 import Axios from "axios";
+import AuthContext from "../../context/AuthContext";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -56,20 +57,17 @@ const useStyles = makeStyles((theme) => ({
 
 function Post({ post, index, likePost }) {
   const classes = useStyles();
-  const [expanded, setExpanded] = React.useState(false);
+  const [expanded, setExpanded] = useState(false);
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState([]);
   const gotImage = post.image.length > 0;
 
-  const userId = localStorage.getItem("userid");
+  const { connexion:{user} } = useContext(AuthContext);
+  
   const postId = post.id;
 
   const getComments = () => {
-    Axios.get(`http://localhost:3001/post/${postId}/comments`, {
-      headers: {
-        "x-access-token": localStorage.getItem("token"),
-      },
-    })
+    Axios.get(`http://localhost:3001/post/${postId}/comments`, {})
       .then((res) => res.data)
       .then(({ results }) => {
         setComments(results);
@@ -78,20 +76,11 @@ function Post({ post, index, likePost }) {
   };
 
   const sendComment = () => {
-    Axios.post(
-      "http://localhost:3001/post/comment",
-      {
-        userId: userId,
-        postId: postId,
-        comment: comment,
-      },
-      {
-        headers: {
-          "x-access-token": localStorage.getItem("token"),
-        },
-      }
-    ).then((_res) => {
-      // setComments([...comments, comment]);
+    Axios.post("http://localhost:3001/post/comment", {
+      userId: user.userId,
+      postId: postId,
+      comment: comment,
+    }).then((_res) => {
       getComments();
       setComment("");
     });

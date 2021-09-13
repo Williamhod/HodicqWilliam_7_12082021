@@ -2,20 +2,25 @@ import axios from "axios";
 import React, { useState, useEffect, createContext } from "react";
 
 const AuthContext = createContext();
+const initialContext = { loggedIn: undefined };
 
 function AuthContextProvider(props) {
-  const [loggedIn, setLoggedIn] = useState(undefined);
+  // const [loggedIn, setLoggedIn] = useState(undefined);
+  const [connexion, setConnexion] = useState(initialContext);
 
-  async function getLoggedIn() {
-    const loggedInRes = await axios.get("http://localhost:3001/user/loggedIn");
-    console.log('res',loggedInRes.data)
-    setLoggedIn(loggedInRes.data);
+  async function getConnexion() {
+    const connexionRes = await axios
+      .get("http://localhost:3001/user/loggedIn")
+      .then((res) => res.data);
+    
+    console.log("res", connexionRes);
+    setConnexion(connexionRes);
   }
   useEffect(() => {
-    getLoggedIn();
+    getConnexion();
   }, []);
   return (
-    <AuthContext.Provider value={{ loggedIn, getLoggedIn }}>
+    <AuthContext.Provider value={{ connexion, getConnexion }}>
       {props.children}
     </AuthContext.Provider>
   );

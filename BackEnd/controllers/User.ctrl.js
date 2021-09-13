@@ -3,8 +3,9 @@ const db = require("../config/db");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
-exports.signup = async (req, res, next) => {
+exports.signup = async (req, res) => {
   const username = req.body.username;
+  console.log('passeword dans l attente d un verify passeword', req.body.password)
   const password = await bcrypt.hash(req.body.password, 10);
   const firstname = req.body.firstname;
   const lastname = req.body.lastname;
@@ -22,14 +23,14 @@ exports.signup = async (req, res, next) => {
   );
 };
 
-exports.login = (req, res) => {
+exports.login =  (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
 
   db.query(
     "SELECT * FROM Users WHERE username = ? ",
     username,
-    (err, results) => {
+    async(err, results) => {
       if (err) {
         console.log(err);
       }
@@ -39,7 +40,8 @@ exports.login = (req, res) => {
         });
       }
       if (results.length > 0) {
-        if (bcrypt.compare(password, results[0].password)) {
+        const verif = await bcrypt.compare(password, results[0].password);
+        if  (verif) {
           const token = jwt.sign(
             {
               userId: results[0].id,
@@ -53,19 +55,7 @@ exports.login = (req, res) => {
 
             { expiresIn: "2h" }
           );
-          res
-            .cookie("token", token, { httpOnly: true, maxAge: 900000 })
-            //.send();
-            .json({
-              auth: true,
-              loggedIn: true,
-              username: username,
-              id: results[0].id,
-              userId: results[0].id,
-              isAdmin: results[0].isAdmin,
-              token: token,
-            })
-            .send();
+          res.cookie("token", token, { httpOnly: true, maxAge: 900000 }).send();
         } else {
           res.json({
             loggedIn: false,
@@ -86,16 +76,16 @@ exports.logout = (req, res) => {
 exports.loggedIn = (req, res) => {
   try {
     const token = req.cookies.token;
+    const defaultState = { loggedIn: false };
 
-    console.log(req.cookies, req.cookies.token)
+    if (!token) return res.send(defaultState);
 
-    if (!token) return res.send(false);
+    const decodedToken = jwt.verify(token, process.env.SECRET_TOKEN);
+    const { iat, exp, ...user } = decodedToken;
 
-    jwt.verify(token, process.env.SECRET_TOKEN);
-
-    res.send(true);
+    res.send({ loggedIn: true, user });
   } catch (err) {
-    res.send(false);
+    res.send(defaultState);
   }
 };
 

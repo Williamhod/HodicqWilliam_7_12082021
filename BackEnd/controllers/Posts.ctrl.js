@@ -2,7 +2,8 @@ const db = require("../config/db");
 
 exports.createPost = (req, res) => {
   const image = req.body.image;
-  const { title, description, author } = req.body;
+  const { title, description } = req.body;
+  const {userId} = res.locals.user;
 
   let imageUrl = "";
   if (req.file) {
@@ -13,7 +14,7 @@ exports.createPost = (req, res) => {
 
   db.query(
     "INSERT INTO post (title, description, image, userid) VALUES (?, ?, ?, ?);",
-    [title, description, imageUrl, author],
+    [title, description, imageUrl, userId],
     (err, results) => {
       console.log(err);
       res.send(results);
@@ -22,7 +23,8 @@ exports.createPost = (req, res) => {
 };
 
 exports.readPosts = (req, res) => {
-  const { userId } = req.query;
+  const {userId} = res.locals.user;
+  
 
   db.query(
     `
@@ -47,8 +49,11 @@ exports.readPosts = (req, res) => {
 };
 
 exports.likePost = (req, res) => {
-  const { userId, postId, like } = req.body;
+  const { postId, like } = req.body;
+  const {userId} = res.locals.user;
 
+  if (!userId) return res.status(401).json({ errorMessage: 'Non autorisé' })
+  
   let query = "";
   if (like) {
     query = "INSERT INTO Likes (userId, postId) VALUES (?,?)";
@@ -82,7 +87,8 @@ exports.getComments = (req, res) => {
 };
 
 exports.sendComment = (req, res) => {
-  const { userId, postId, comment } = req.body;
+  const { postId, comment } = req.body;
+  const {userId} = res.locals.user;
 
   db.query(
     "INSERT INTO comments (userId, postId,comment) VALUES (?,?,?)",

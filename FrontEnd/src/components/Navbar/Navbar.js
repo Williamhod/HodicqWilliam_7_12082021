@@ -15,6 +15,7 @@ import { useMediaQuery } from "@material-ui/core";
 import Axios from "axios";
 import { useContext } from "react";
 import AuthContext from "../../context/AuthContext";
+import {menuItemsLogged, menuItemsNotLogged} from '../../datas/dataMenu'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -36,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
 
 function Navbar(props) {
   const { history } = props;
-  const { loggedIn, getLoggedIn } = useContext(AuthContext);
+  const { connexion, getConnexion } = useContext(AuthContext);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("xs"));
   const isTab = useMediaQuery(theme.breakpoints.down("sm"));
@@ -58,56 +59,15 @@ function Navbar(props) {
     history.push(pageURL);
   };
 
-  const menuItemsLogged = [
-    {
-      id: 1,
-      menuTitle: "Publier",
-      pageURL: "/post",
-      disconnect: false,
-    },
-    {
-      id: 2,
-      menuTitle: "Profil",
-      pageURL: "/profile",
-      disconnect: false,
-    },
-    {
-      id: 3,
-      menuTitle: "Déconnexion",
-      pageURL: "/login",
-      disconnect: true,
-    },
-  ];
-
-  const menuItemsNotLogged = [
-    {
-      id: 4,
-      menuTitle: "Accueil",
-      pageURL: "/",
-      disconnect: false,
-    },
-    {
-      id: 5,
-      menuTitle: "Inscription",
-      pageURL: "/register",
-      disconnect: false,
-    },
-    {
-      id: 6,
-      menuTitle: "Connexion",
-      pageURL: "/login",
-      disconnect: false,
-    },
-  ];
+  
 
   const changeUrl = async (pageURL, disconnect) => {
     console.log("disconnect", disconnect);
     if (disconnect) {
-      localStorage.clear();
       await Axios.get("http://localhost:3001/user/logout")
       // window.location.reload(false);
       .then(console.log)
-      .then(() => getLoggedIn())
+      .then(() => getConnexion())
       // .then(() => handleButtonClick(pageURL));
     }
       handleButtonClick(pageURL);
@@ -115,7 +75,7 @@ function Navbar(props) {
   };
 
   //ajust menu link by loggin statement
-  const menuItems = loggedIn ? menuItemsLogged : menuItemsNotLogged;
+  const menuItems = connexion.loggedIn ? menuItemsLogged : menuItemsNotLogged;
 
   //Ajust the logo by the screen size
   const logoNavbar = isTab ? LogoNavbarMobile : LogoNavbarDesk;

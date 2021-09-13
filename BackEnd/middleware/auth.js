@@ -19,34 +19,41 @@ const jwt = require("jsonwebtoken");
 };
 */
 
-/*module.exports = (req, res, next) => {
-  const token = req.headers["x-access-token"];
+// module.exports = (req, res, next) => {
+//   const token = req.headers["x-access-token"];
 
-  if (!token) {
-    res.send("user not authenticated ")
-  } else {
-    jwt.verify(token, process.env.SECRET_TOKEN, (err, decoded) => {
-      if (err) {
-        res.json({auth:false, message:"you fail to authenticate"})
-      } else {
-        req.userId = decoded.id;
-        next();
-      }
-    })
-  }
-  
-};
-*/
+//   if (!token) {
+//     res.send("user not authenticated ")
+//   } else {
+//     jwt.verify(token, process.env.SECRET_TOKEN, (err, decoded) => {
+//       if (err) {
+//         res.json({auth:false, message:"you fail to authenticate"})
+//       } else {
+//         req.userId = decoded.id;
+//         next();
+//       }
+//     })
+//   }
+// };
 
-module.exports = (req, res, next) => {
+exports.checkUser = (req, res, next) => {
   try {
     const token = req.cookies.token;
-    if (!token) return res.status(401).json({ message: Unauthorized });
+    if (!token) res.locals.user = null;
+
     const verified = jwt.verify(token, process.env.SECRET_TOKEN);
-    req.user = verified.user;
-    next()
+    const { iat, exp, ...user } = verified;
+    res.locals.user = user;
+
   } catch (err) {
-    console.error(err);
-    res.status(401).json({ message: "unauthorized" });
+    res.locals.user = null;
   }
-};
+  
+  next();
+}
+
+exports.checkAuth = (req, res, next) => {
+  if (!res.locals.user) return res.status(401).json({ message: "Unauthorized" });
+
+  next();
+}

@@ -11,10 +11,11 @@ import { useContext } from "react";
 
 function Home() {
   const [posts, setPosts] = useState([]);
-  const { loggedIn } = useContext(AuthContext);
+  const {
+    connexion: { loggedIn, user },
+  } = useContext(AuthContext);
   const location = useLocation();
-  const userId = localStorage.getItem("userid");
-  console.log(userId);
+  const userId = user?.userId;
 
   const lorem = new LoremIpsum({
     sentencesPerParagraph: {
@@ -31,11 +32,7 @@ function Home() {
     if (loggedIn === false) {
     }
     if (loggedIn === true) {
-      Axios.get("http://localhost:3001/post?userId=" + userId, {
-        headers: {
-          "x-access-token": localStorage.getItem("token"),
-        },
-      })
+      Axios.get("http://localhost:3001/post?userId=" + userId)
         .then((res) => res.data)
         .then((res) => {
           setPosts(res);
@@ -52,19 +49,11 @@ function Home() {
     lesPosts[i].nbLikes += likeVal[+lesPosts[i].isLiked];
     lesPosts[i].isLiked = !lesPosts[i].isLiked;
 
-    await Axios.post(
-      "http://localhost:3001/post/like",
-      {
-        userId: userId,
-        postId: lesPosts[i].id,
-        like: lesPosts[i].isLiked,
-      },
-      {
-        headers: {
-          "x-access-token": localStorage.getItem("token"),
-        },
-      }
-    ).then((response) => {
+    await Axios.post("http://localhost:3001/post/like", {
+      userId: user.userId,
+      postId: lesPosts[i].id,
+      like: lesPosts[i].isLiked,
+    }).then((response) => {
       setPosts(lesPosts);
     });
   };
@@ -74,9 +63,13 @@ function Home() {
       {loggedIn ? (
         <div className="home">
           <div className="home-loggin">
-            {posts.map((post, key) => (
-              <Post post={post} key={key} index={key} likePost={likePost} />
-            ))}
+            {posts.length ? (
+              posts.map((post, key) => (
+                <Post post={post} key={key} index={key} likePost={likePost} />
+              ))
+            ) : (
+              <p>Soyez le premier a publier !</p>
+            )}
             <div>
               <img
                 className="logo-homePage"

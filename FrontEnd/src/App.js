@@ -4,7 +4,7 @@ import Home from "./pages/Home/Home";
 import Register from "./pages/Register/Register";
 import Login from "./pages/Login/Login";
 import Navbar from "./components/Navbar/Navbar";
-import Post from "./pages/Post/Post";
+import Post from "./pages/PostForm/PostForm";
 import Profile from "./pages/Profile/Profile";
 import Footer from "./components/Footer/Footer";
 import axios from "axios";
@@ -15,7 +15,7 @@ import { useContext } from "react";
 axios.defaults.withCredentials = true;
 
 function App() {
-  const { loggedIn } = useContext(AuthContext);
+  const { connexion:{loggedIn} } = useContext(AuthContext);
   return (
       <Router>
         <Navbar />

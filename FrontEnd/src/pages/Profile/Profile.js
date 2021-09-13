@@ -1,13 +1,18 @@
 import "./Profile.scss";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Axios from "axios";
 import { useLocation } from "react-router-dom";
 import Moment from "react-moment";
 import "moment/locale/fr";
+import AuthContext from "../../context/AuthContext";
 
 function Profile() {
   const [yourProfile, setYourProfile] = useState({});
   const location = useLocation();
+  const {
+    connexion: { user },
+  } = useContext(AuthContext);
+  const username = user.username;
 
   const getProfile = async (username) => {
     return await Axios.get("http://localhost:3001/user/profile/" + username)
@@ -17,26 +22,24 @@ function Profile() {
 
   useEffect(() => {
     (async () => {
-      if (!localStorage.getItem("loggedIn")) {
-        localStorage.setItem("loggedIn", false);
-      }
-      if (localStorage.getItem("loggedIn", true)) {
-        const username = localStorage.getItem("username");
-        setYourProfile(await getProfile(username));
-      }
+      setYourProfile(await getProfile(username));
     })();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [location]);
+  }, [username, location]);
 
   return (
-    
     <>
       <div className="Profile">
         {yourProfile ? (
           <>
             <h3>{yourProfile.lastname}</h3>
             <h3>{yourProfile.firstname}</h3>
-            <h3>{<Moment format="ddd DD MMMM YYYY">{yourProfile.dateOfBirth}</Moment>}</h3>
+            <h3>
+              {
+                <Moment format="ddd DD MMMM YYYY">
+                  {yourProfile.dateOfBirth}
+                </Moment>
+              }
+            </h3>
           </>
         ) : (
           "INCONNU"

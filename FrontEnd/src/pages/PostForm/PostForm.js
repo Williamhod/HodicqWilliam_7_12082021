@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./Post.scss";
+import "./PostForm.scss";
 import Axios from "axios";
 import { useHistory } from "react-router-dom";
 
@@ -24,7 +24,6 @@ function Post() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [image, setImage] = useState([]);
-  const author = localStorage.getItem("userid");
 
   const classes = useStyles();
 
@@ -35,14 +34,9 @@ function Post() {
     formData.append("image", image[0]);
     formData.append("title", title);
     formData.append("description", description);
-    formData.append("author", author);
-    Axios.post("http://localhost:3001/post", formData, {
-      headers: {
-        "x-access-token": localStorage.getItem("token"),
-      },
-    }).then(() => {
-      history.push("/");
-    });
+    Axios
+      .post("http://localhost:3001/post", formData)
+      .then(() => history.push("/"));
   };
   return (
     <div className="post-main-container">

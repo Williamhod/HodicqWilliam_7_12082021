@@ -50,6 +50,8 @@ let corsOptions = {
 const userRoutes = require('./routes/User.rt')
 const postRoutes = require('./routes/Post.rt')
 
+const auth = require('./middleware/auth')
+
 /********************
  **    App- Use     *
  *******************/
@@ -66,6 +68,8 @@ app.use(morgan('tiny'));
 app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use(cookieParser());
 // Routes
+app.all('*', auth.checkUser);
+
 app.use("/user",rateLimit, userRoutes);
 app.use("/post",rateLimit, postRoutes);
 
