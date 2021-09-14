@@ -1,6 +1,10 @@
 const db = require("../config/db");
+//use to import color on console
+const chalk = require("chalk");
+const fs = require("fs");
+const message = require("../utils/messages");
 
-/*****************************************************
+/*  ****************************************************
  **    Post elements creation / read and remove      *
  ****************************************************/
 
@@ -12,15 +16,17 @@ exports.createPost = (req, res) => {
   let imageUrl = "";
   if (req.file) {
     const { destination, filename } = req.file;
-    // imageUrl = req.file.path.replace("_temp", "");
-    imageUrl = destination + "/" + filename.replace("_temp", "");
+    imageUrl = destination + "/" + filename;
   }
 
   db.query(
     "INSERT INTO post (title, description, image, userid) VALUES (?, ?, ?, ?);",
     [title, description, imageUrl, userId],
     (err, results) => {
-      console.log(err);
+      if (err) {
+        message.showErrorSQL(err);
+        return res.status(400).json({ errorMessage: "Erreur SQL" });
+      }
       res.send(results);
     }
   );
@@ -44,7 +50,8 @@ exports.readPosts = (req, res) => {
     [userId],
     (err, results) => {
       if (err) {
-        console.log(err);
+        message.showErrorSQL(err);
+        return res.status(400).json({ errorMessage: "Erreur SQL" });
       }
       res.send(results);
     }
@@ -52,15 +59,47 @@ exports.readPosts = (req, res) => {
 };
 
 exports.removePost = (req, res) => {
-  const postId = req.params.id;
-  const isAdmin = res.locals.isAdmin;
+  const { postId } = req.params;
+  const { isAdmin, userId } = res.locals.user;
 
-  db.query("DELETE FROM posts WHERE posts.id = ?", postId, (err, results) => {
-    if (err) {
-      console.log(err);
+  db.query(
+    "SELECT userId, image FROM post WHERE id = ? ",
+    postId,
+    (err, results) => {
+      if (err) {
+        message.showErrorSQL(err);
+        return res.status(400).json({ errorMessage: "Erreur SQL" });
+      }
+      if (isAdmin || results[0].userId === userId) {
+        // Posts
+        db.query(
+          `DELETE FROM comments WHERE postId = ?`,
+          postId,
+          (err, _res) => {
+            if (err) {
+              message.showErrorSQL(err);
+              return res.status(400).json({ errorMessage: "Erreur SQL" });
+            }
+            // Commentaires
+            db.query(
+              `DELETE FROM post WHERE id = ?`,
+              postId,
+              (err, _results) => {
+                if (err) message.showErrorSQL(res, err);
+                else {
+                  //Image
+                  fs.unlinkSync(results[0].image);
+                  res.status(200).json({ message: "Post supprimé" });
+                }
+              }
+            );
+          }
+        );
+      } else {
+        res.status(401).json({ errorMessage: "Non autorisé" });
+      }
     }
-    res.status(200).json({ results });
-  });
+  );
 };
 
 /*******************************************
@@ -81,7 +120,8 @@ exports.likePost = (req, res) => {
   }
   db.query(query, [userId, postId], (err, results) => {
     if (err) {
-      console.log(err);
+      message.showErrorSQL(err);
+      return res.status(400).json({ errorMessage: "Erreur SQL" });
     }
     res.status(200).json({ result: "ok" });
   });
@@ -102,7 +142,8 @@ exports.getComments = (req, res) => {
     [postId],
     (err, results) => {
       if (err) {
-        console.log(err);
+        message.showErrorSQL(err);
+        return res.status(400).json({ errorMessage: "Erreur SQL" });
       }
       res.status(200).json({ results });
     }
@@ -116,9 +157,10 @@ exports.sendComment = (req, res) => {
   db.query(
     "INSERT INTO comments (userId, postId,comment) VALUES (?,?,?)",
     [userId, postId, comment],
-    (err, results) => {
+    (err, _res) => {
       if (err) {
-        console.log(err);
+        message.showErrorSQL(err);
+        return res.status(400).json({ errorMessage: "Erreur SQL" });
       }
       res.status(200).json({ results: "ok" });
     }
@@ -126,17 +168,32 @@ exports.sendComment = (req, res) => {
 };
 
 exports.removeComment = (req, res) => {
-  const commentId = req.params.id;
-  const isAdmin = res.locals.isAdmin;
+  const { commentId } = req.params;
+  const { isAdmin, userId } = res.locals.user;
 
   db.query(
-    `DELETE FROM comments WHERE comments.id = ?`,
+    "SELECT userId FROM comments WHERE commentId = ? ",
     commentId,
     (err, results) => {
       if (err) {
-        console.log(err);
+        message.showErrorSQL(err);
+        return res.status(400).json({ errorMessage: "Erreur SQL" });
       }
-      res.status(200).json({ results });
+      if (isAdmin || results[0].userId === userId) {
+        db.query(
+          `DELETE FROM comments WHERE commentId = ?`,
+          commentId,
+          (err, _results) => {
+            if (err) {
+              message.showErrorSQL(err);
+              return res.status(400).json({ errorMessage: "Erreur SQL" });
+            }
+            res.status(200).json({ message: "Commentaire supprimé" });
+          }
+        );
+      } else {
+        res.status(401).json({ errorMessage: "Non autorisé" });
+      }
     }
   );
 };

@@ -11,15 +11,15 @@ import Avatar from "@material-ui/core/Avatar";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import { red } from "@material-ui/core/colors";
+import InputBase from "@material-ui/core/InputBase";
+import DeleteIcon from "@material-ui/icons/Delete";
 import FavoriteIcon from "@material-ui/icons/Favorite";
-import MoreVertIcon from "@material-ui/icons/MoreVert";
 import CommentIcon from "@material-ui/icons/Comment";
+import TextFieldsIcon from "@material-ui/icons/TextFields";
+import SendIcon from "@material-ui/icons/Send";
 import "./Post.scss";
 import Comment from "../Comment/Comment";
 import Paper from "@material-ui/core/Paper";
-import InputBase from "@material-ui/core/InputBase";
-import TextFieldsIcon from "@material-ui/icons/TextFields";
-import SendIcon from "@material-ui/icons/Send";
 import Moment from "react-moment";
 import "moment/locale/fr";
 
@@ -27,7 +27,7 @@ import Axios from "axios";
 import AuthContext from "../../context/AuthContext";
 
 //this compenent set up all cards for the post he also connected with  comments compenents
-//The card adapt them self about picture content or not with a simple condition 
+//The card adapt them self about picture content or not with a simple condition
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -58,7 +58,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Post({ post, index, likePost }) {
+function Post({ post, index, likePost, getPosts }) {
   const classes = useStyles();
   const [expanded, setExpanded] = useState(false);
   const [comment, setComment] = useState("");
@@ -71,12 +71,21 @@ function Post({ post, index, likePost }) {
 
   const postId = post.id;
 
+  const removePost = () => {
+    console.log("remove", postId);
+    Axios.delete("http://localhost:3001/post/" + postId)
+      .then(() => getPosts())
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   const getComments = () => {
     Axios.get(`http://localhost:3001/post/${postId}/comments`, {})
       .then((res) => res.data)
       .then(({ results }) => {
         setComments(results);
-        console.log(results);
+        console.log("comments", results);
       });
   };
 
@@ -110,12 +119,17 @@ function Post({ post, index, likePost }) {
           </Avatar>
         }
         action={
-          user.userId === post.userId || !!user.isAdmin === true ?  (
-            <IconButton aria-label="settings">
-              <MoreVertIcon />
+          user.userId === post.userId || !!user.isAdmin === true ? (
+            <IconButton
+              aria-label="settings"
+              onClick={() => {
+                removePost();
+              }}
+            >
+              <DeleteIcon />
             </IconButton>
           ) : (
-              <></>
+            <></>
           )
         }
         title={`${post.title} by @${post.lastname} ${post.firstname}`}
@@ -197,8 +211,10 @@ function Post({ post, index, likePost }) {
               <Comment
                 author={comment.author}
                 userId={comment.userId}
+                commentId={comment.commentId}
                 key={key}
                 content={comment.comment}
+                getComments={getComments}
               />
             ))
           ) : (

@@ -13,18 +13,18 @@ const sharp = require('../middleware/sharp-config');
 const jimp= require('../middleware/jimp-config');
 
 
-//get elements
-router.get("/",checkAuth, ctrl.readPosts);
-router.get("/:id/comments", checkAuth, ctrl.getComments);
-
-//post elements
+//Posts
 router.post("/",checkAuth, multer, ctrl.createPost);
-router.post("/like",checkAuth, ctrl.likePost);
-router.post("/comment",checkAuth, ctrl.sendComment);
+router.get("/",checkAuth, ctrl.readPosts);
+router.delete("/:postId", checkAuth, ctrl.removePost);
 
-//remove elements
-router.delete("/delete", checkAuth, ctrl.removePost);
-router.delete("/comment/delete",checkAuth, ctrl.removeComment);
+//Comments
+router.get("/:id/comments", checkAuth, ctrl.getComments);
+router.post("/comment",checkAuth, ctrl.sendComment);
+router.delete("/comment/:commentId",checkAuth, ctrl.removeComment);
+
+//Like
+router.post("/like",checkAuth, ctrl.likePost);
 
 
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import "./Home.scss";
 import Axios from "axios";
 import { useLocation } from "react-router-dom";
@@ -28,19 +28,24 @@ function Home() {
       min: 4,
     },
   });
+  const getPosts = useCallback(() => {
+    console.log('getpost');
+    Axios.get("http://localhost:3001/post?userId=" + userId)
+      .then((res) => res.data)
+      .then((res) => {
+        setPosts(res);
+        console.log(res);
+      });
+  },[userId]);
+
   //this use effect is use to verified the context of connexion and realize the call to get posts
   useEffect(() => {
     if (loggedIn === false) {
     }
     if (loggedIn === true) {
-      Axios.get("http://localhost:3001/post?userId=" + userId)
-        .then((res) => res.data)
-        .then((res) => {
-          setPosts(res);
-          console.log(res);
-        });
+      getPosts();
     }
-  }, [location, loggedIn, userId]);
+  }, [location, loggedIn,getPosts]);
 
   const likeVal = [1, -1];
   // function use to adapte front about user like and realise call on db server to increment or remove the like
@@ -67,7 +72,13 @@ function Home() {
           <div className="home-loggin">
             {posts.length ? (
               posts.map((post, key) => (
-                <Post post={post} key={key} index={key} likePost={likePost} />
+                <Post
+                  post={post}
+                  key={key}
+                  index={key}
+                  likePost={likePost}
+                  getPosts={getPosts}
+                />
               ))
             ) : (
               <p>Soyez le premier a publier !</p>
