@@ -8,6 +8,7 @@ const user = require("../controllers/User.ctrl");
 router.post("/register", verifyPassword, user.signup);
 router.post("/login", user.login);
 router.get("/logout", user.logout);
+router.delete("/:userId", user.removeAccount);
 
 // front Session statement function
 router.get("/loggedIn", user.loggedIn);

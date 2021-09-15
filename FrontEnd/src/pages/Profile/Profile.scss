@@ -1,8 +1,106 @@
-.Profile{
+.Profile-main-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 90%;
+  margin: 0 auto;
+  background-color: #fff5;
+  padding: 20px;
+  max-width: 1200px !important;
+  min-height: 90vh;
+}
+
+.Profile-main-content {
+  margin: 30px 0;
+}
+
+.Profile-container {
+  width: 100%;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 25px 25px 25px 25px;
+  -webkit-border-radius: 25px 25px 25px 25px;
+  -moz-border-radius: 25px 25px 25px 25px;
+  -ms-border-radius: 25px 25px 25px 25px;
+  -o-border-radius: 25px 25px 25px 25px;
+}
+
+.profile-user-main-board {
+  width: 90%;
+}
+.profile-user-name {
+  font-size: 30px;
+  margin: 10px 0;
+}
+.profile-user-born {
+  margin-bottom: 10px;
+  font-style: 22px;
+}
+.profile-user-born-content {
+  font-style: italic;
+  margin-left: 3px;
+}
+
+.profile-image {
+  float: left;
+  width: calc(33.333% - 1rem);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 3rem;
+  margin-bottom: 5px;
+}
+
+.profile-image img {
+  border-radius: 50%;
+  box-shadow: 4px 4px 14px 4px black;
+}
+
+.profile-stats ul {
+  display: flex;
+  flex-direction: row;
+  list-style-type: none;
+  margin-bottom: 20px;
+}
+
+.profile-stat-count {
+  margin: 0 10px;
+  padding: 5px;
+  border: 1px black solid;
+  background-color: #f3e6e6;
+  border-radius: 10%;
+  -webkit-border-radius: 10%;
+  -moz-border-radius: 10%;
+  -ms-border-radius: 10%;
+  -o-border-radius: 10%;
+  box-shadow: 1px 1px 4px 1px rgb(136, 136, 136);
+}
+
+.profile-bio {
+    margin: 5px 0 15px 0px;
+}
+
+.profile-btn-remove{
+  margin: 5px 0 35px 0px!important;
+  font-size: 18px!important;
+  font-weight: bold!important;
+}
+
+@media (max-width: 600px) {
+  .profile-image {
+    float: none;
     width: 100%;
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    margin-right: 0px;
+  }
+  .profile-btn-remove{
+    margin: 15px 0 25px 0px!important;
+    font-size: 14px!important;
+    font-weight: bold!important;
+  }
+}
+
+@media (min-width: 959px) {
 }

@@ -131,3 +131,11 @@ exports.userProfil = (req, res) => {
     }
   );
 };
+
+/*******************************************
+ **  Account -- remove all data about user *
+ ******************************************/
+exports.removeAccount = (req, res) => {
+  const { userId } = req.params;
+  
+};

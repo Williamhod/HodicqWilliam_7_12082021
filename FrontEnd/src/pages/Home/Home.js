@@ -40,8 +40,7 @@ function Home() {
 
   //this use effect is use to verified the context of connexion and realize the call to get posts
   useEffect(() => {
-    if (loggedIn === false) {
-    }
+    
     if (loggedIn === true) {
       getPosts();
     }

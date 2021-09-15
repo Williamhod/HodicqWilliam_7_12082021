@@ -1,3 +1,4 @@
+//use to import color on console
 const chalk = require("chalk");
 
 exports.showErrorSQL = (err) => {

@@ -1,6 +1,5 @@
 const db = require("../config/db");
-//use to import color on console
-const chalk = require("chalk");
+
 const fs = require("fs");
 const message = require("../utils/messages");
 
@@ -43,7 +42,7 @@ exports.readPosts = (req, res) => {
       WHERE l.userId = ?
       AND l.postId = p.id) AS isLiked
     FROM socialmedia.post p
-      INNER JOIN socialmedia.users u ON p.userid = u.id
+      INNER JOIN socialmedia.users u ON p.userid = u.userId
       LEFT JOIN socialmedia.likes lp ON p.id = lp.postId
     GROUP BY p.id
     ORDER by p.created_at desc`,
@@ -65,34 +64,42 @@ exports.removePost = (req, res) => {
   db.query(
     "SELECT userId, image FROM post WHERE id = ? ",
     postId,
-    (err, results) => {
+    (err, post) => {
       if (err) {
         message.showErrorSQL(err);
         return res.status(400).json({ errorMessage: "Erreur SQL" });
       }
-      if (isAdmin || results[0].userId === userId) {
+      if (isAdmin || post[0].userId === userId) {
         // Posts
         db.query(
           `DELETE FROM comments WHERE postId = ?`,
           postId,
-          (err, _res) => {
+          (err, _result) => {
             if (err) {
               message.showErrorSQL(err);
               return res.status(400).json({ errorMessage: "Erreur SQL" });
             }
             // Commentaires
-            db.query(
-              `DELETE FROM post WHERE id = ?`,
-              postId,
-              (err, _results) => {
-                if (err) message.showErrorSQL(res, err);
-                else {
-                  //Image
-                  fs.unlinkSync(results[0].image);
-                  res.status(200).json({ message: "Post supprimé" });
+            db.query(`DELETE FROM post WHERE id = ?`, postId, (err, _res) => {
+              if (err) message.showErrorSQL(res, err);
+              //likes
+              db.query(
+                "DELETE FROM likes WHERE postId = ?",
+                postId,
+                (err, _result) => {
+                  if (err) {
+                    message.showErrorSQL(err);
+                    return res.status(400).json({ errorMessage: "Erreur SQL" });
+                  } else {
+                    //Image
+                    if (post[0].image.length > 0) {
+                      fs.unlinkSync(post[0].image);
+                    }
+                    res.status(200).json({ message: "Post supprimé" });
+                  }
                 }
-              }
-            );
+              );
+            });
           }
         );
       } else {
@@ -137,7 +144,7 @@ exports.getComments = (req, res) => {
   db.query(
     `SELECT c.*, concat(u.firstname ," ", u.lastname)  as author 
     from comments c
-    INNER JOIN users u ON c.userid = u.id
+    INNER JOIN users u ON c.userid = u.userId
      WHERE c.postId=?;`,
     [postId],
     (err, results) => {

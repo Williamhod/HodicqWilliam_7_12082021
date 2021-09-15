@@ -52,7 +52,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors(corsOptions));
 app.use(nocache());
 app.use(helmet());
-app.use(morgan('tiny'));
+app.use(morgan('dev'));
 app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use(cookieParser());
 // Routes
