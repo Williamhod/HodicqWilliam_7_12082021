@@ -8,10 +8,10 @@ const message = require("../utils/messages");
  ****************************************************/
 
 exports.createPost = (req, res) => {
-  const image = req.body.image;
-  const { title, description } = req.body;
+  const { title, description, image } = req.body;
   const { userId } = res.locals.user;
 
+  
   let imageUrl = "";
   if (req.file) {
     const { destination, filename } = req.file;
@@ -19,7 +19,7 @@ exports.createPost = (req, res) => {
   }
 
   db.query(
-    "INSERT INTO post (title, description, image, userid) VALUES (?, ?, ?, ?);",
+    "INSERT INTO post (title, description, image, userId) VALUES (?, ?, ?, ?);",
     [title, description, imageUrl, userId],
     (err, results) => {
       if (err) {
@@ -70,7 +70,7 @@ exports.removePost = (req, res) => {
         return res.status(400).json({ errorMessage: "Erreur SQL" });
       }
       if (isAdmin || post[0].userId === userId) {
-        // Posts
+        // Comments
         db.query(
           `DELETE FROM comments WHERE postId = ?`,
           postId,
@@ -79,7 +79,7 @@ exports.removePost = (req, res) => {
               message.showErrorSQL(err);
               return res.status(400).json({ errorMessage: "Erreur SQL" });
             }
-            // Commentaires
+            // post
             db.query(`DELETE FROM post WHERE id = ?`, postId, (err, _res) => {
               if (err) message.showErrorSQL(res, err);
               //likes

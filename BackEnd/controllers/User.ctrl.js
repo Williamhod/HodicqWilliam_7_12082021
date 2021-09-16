@@ -3,13 +3,17 @@ const db = require("../config/db");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
+const fs = require("fs");
 /*****************
  **    Register  *
  *****************/
 
 exports.signup = async (req, res) => {
   const username = req.body.username;
-  console.log('passeword dans l attente d un verify passeword', req.body.password)
+  console.log(
+    "passeword dans l attente d un verify passeword",
+    req.body.password
+  );
   const password = await bcrypt.hash(req.body.password, 10);
   const firstname = req.body.firstname;
   const lastname = req.body.lastname;
@@ -27,19 +31,18 @@ exports.signup = async (req, res) => {
   );
 };
 
-
 /**************
  **   Login   *
  *************/
 
-exports.login =  (req, res) => {
+exports.login = (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
 
   db.query(
     "SELECT * FROM Users WHERE username = ? ",
     username,
-    async(err, results) => {
+    async (err, results) => {
       if (err) {
         console.log(err);
       }
@@ -50,10 +53,10 @@ exports.login =  (req, res) => {
       }
       if (results.length > 0) {
         const verif = await bcrypt.compare(password, results[0].password);
-        if  (verif) {
+        if (verif) {
           const token = jwt.sign(
             {
-              userId: results[0].id,
+              userId: results[0].userId,
               username: results[0].username,
               firstname: results[0].firstname,
               lastname: results[0].lastname,
@@ -65,7 +68,9 @@ exports.login =  (req, res) => {
             { expiresIn: "1h" }
           );
           //Set up token and cookie that can be change from browser and up to 1h
-          res.cookie("token", token, { httpOnly: true, maxAge: 3600000 }).send();
+          res
+            .cookie("token", token, { httpOnly: true, maxAge: 3600000 })
+            .send();
         } else {
           res.json({
             loggedIn: false,
@@ -83,17 +88,15 @@ exports.login =  (req, res) => {
  **    Disconnection *
  *********************/
 
- // For DC we remove content in cookie then change date to past 
+// For DC we remove content in cookie then change date to past
 exports.logout = (req, res) => {
   res.cookie("token", "", { httpOnly: true, expires: new Date(0) }).send();
 };
 
-
-
 /******************************
  **   log statement for front *
  ******************************/
-//Send loggedIn statement to true or false to realise a front context 
+//Send loggedIn statement to true or false to realise a front context
 
 exports.loggedIn = (req, res) => {
   try {
@@ -110,7 +113,6 @@ exports.loggedIn = (req, res) => {
     res.send(defaultState);
   }
 };
-
 
 /********************************
  **  Profil -- work in progress *
@@ -136,6 +138,73 @@ exports.userProfil = (req, res) => {
  **  Account -- remove all data about user *
  ******************************************/
 exports.removeAccount = (req, res) => {
-  const { userId } = req.params;
-  
+  const { userId } = res.locals.user;
+  console.log("user", userId);
+
+  db.query(
+    "SELECT  image FROM post WHERE userId = ? ",
+    userId,
+    (err, posts) => {
+      if (err) {
+        message.showErrorSQL(err);
+        return res.status(400).json({ errorMessage: "Erreur SQL" });
+      }
+
+      // Comments
+      db.query(
+        `DELETE FROM comments WHERE userId = ?`,
+        userId,
+        (err, _result) => {
+          if (err) {
+            message.showErrorSQL(err);
+            return res.status(400).json({ errorMessage: "Erreur SQL" });
+          }
+          // Posts
+          db.query(`DELETE FROM post WHERE userId = ?`, userId, (err, _res) => {
+            if (err) {
+              message.showErrorSQL(err);
+              return res.status(400).json({ errorMessage: "Erreur SQL" });
+            }
+            //likes
+            db.query(
+              "DELETE FROM likes WHERE userId = ?",
+              userId,
+              (err, _result) => {
+                if (err) {
+                  message.showErrorSQL(err);
+                  return res.status(400).json({ errorMessage: "Erreur SQL" });
+                }
+
+                //account
+                db.query(
+                  "DELETE FROM users WHERE userId = ?",
+                  // "SELECT * FROM users WHERE userId = ?",
+                  userId,
+                  (err, _result) => {
+                    if (err) {
+                      message.showErrorSQL(err);
+                      return res
+                        .status(400)
+                        .json({ errorMessage: "Erreur SQL" });
+                    } else {
+                      //Image
+                      console.log("post", posts);
+                      posts.forEach((post) => {
+                        if (fs.existsSync(post.image)) {
+                          fs.unlinkSync(post.image);
+                        }
+                      });
+
+                      // res.status(200).json({ message: "Compte supprimé" });
+                      this.logout(req, res);
+                    }
+                  }
+                );
+              }
+            );
+          });
+        }
+      );
+    }
+  );
 };

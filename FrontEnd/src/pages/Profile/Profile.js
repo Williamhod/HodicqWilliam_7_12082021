@@ -16,6 +16,7 @@ function Profile() {
   const history = useHistory();
   const {
     connexion: { user },
+    getConnexion,
   } = useContext(AuthContext);
   const username = user.username;
 
@@ -32,7 +33,8 @@ function Profile() {
   }, [username, location]);
 
   const removeAccount = () => {
-    Axios.delete("http://localhost:3001/user/" + user.userId)
+    Axios.delete("http://localhost:3001/user/delete")
+      .then(() => getConnexion())
       .then(() => history.push("/"))
       .catch((err) => {
         console.log(err);

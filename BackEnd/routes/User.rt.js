@@ -4,11 +4,13 @@ const verifyPassword = require("../middleware/checkPassWord");
 
 const user = require("../controllers/User.ctrl");
 
+const { checkAuth } = require("../middleware/auth");
+
 // auth
 router.post("/register", verifyPassword, user.signup);
 router.post("/login", user.login);
 router.get("/logout", user.logout);
-router.delete("/:userId", user.removeAccount);
+router.delete("/delete", checkAuth, user.removeAccount);
 
 // front Session statement function
 router.get("/loggedIn", user.loggedIn);
