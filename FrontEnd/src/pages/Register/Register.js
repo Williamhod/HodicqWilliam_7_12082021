@@ -3,16 +3,13 @@ import "./Register.scss";
 import Axios from "axios";
 import { useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
-import Input from "@material-ui/core/Input";
-import InputLabel from "@material-ui/core/InputLabel";
-import InputAdornment from "@material-ui/core/InputAdornment";
-import FormControl from "@material-ui/core/FormControl";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import Button from "@material-ui/core/Button";
 import AccountBoxIcon from "@material-ui/icons/AccountBox";
 import VpnKeyIcon from "@material-ui/icons/VpnKey";
 import ContactsIcon from "@material-ui/icons/Contacts";
 import * as utils from "../../utils";
+import CustomInput from "../../components/Input/Input";
 
 const useStyles = makeStyles((theme) => ({
   margin: {
@@ -22,13 +19,16 @@ const useStyles = makeStyles((theme) => ({
 
 function Register() {
   const classes = useStyles();
-  const [dbMessage, setDbMessage] = useState("");
-  const [formData, setFormData] = useState({
+  const initialState = {
     username: "",
     password: "",
     firstname: "",
     lastname: "",
-  });
+  };
+
+  const [dbMessage, setDbMessage] = useState("");
+  const [formData, setFormData] = useState(initialState);
+  const [errorMessages, setErrorMessages] = useState(initialState);
 
   const handleChange = ({ target: { name, value } }) => {
     setFormData({
@@ -49,11 +49,12 @@ function Register() {
         );
         setTimeout(() => history.push("/login"), 2500);
       })
-      .catch(({ response }) => {
+
+      .catch(({ response: { data } }) => {
         // Affichage message d'erreur
-        !utils.empty(response)
-          ? setDbMessage(`Erreur ${response.status} :  ${response.statusText}`)
-          : setDbMessage("");
+        !utils.empty(data.errorMessages)
+          ? setErrorMessages(data.errorMessages)
+          : setErrorMessages(initialState);
       });
   };
 
@@ -62,36 +63,41 @@ function Register() {
       <div className="Register-main-content">
         <h1>Création de compte</h1>
       </div>
-      <div className="register-form-main-container">
-        <FormControl className="register-form-container">
-          <InputLabel
-            htmlFor="input-with-icon-adornment"
-            style={{
-              fontSize: 24,
-              margin: -5,
-            }}
-          >
-            Votre identifiant
-          </InputLabel>
-          <Input
-            className="register-input"
-            onChange={handleChange}
-            name="username"
-            id="input-with-icon-adornment"
-            startAdornment={
-              <InputAdornment position="start">
-                <AccountCircle
-                  style={{
-                    height: 25,
-                    width: 25,
-                  }}
-                />
-              </InputAdornment>
-            }
-          />
-        </FormControl>
-      </div>
-      <div className="register-form-main-container">
+
+      <CustomInput
+        id="input-username"
+        name="username"
+        label="Votre identifiant"
+        icon={AccountCircle}
+        handleChange={handleChange}
+        errorMessage={errorMessages.username}
+      />
+      <CustomInput
+        id="input-password"
+        name="password"
+        label="Votre identifiant"
+        icon={VpnKeyIcon}
+        handleChange={handleChange}
+        errorMessage={errorMessages.password}
+      />
+      <CustomInput
+        id="input-lastname"
+        name="lastname"
+        label="Votre nom de famille"
+        icon={ContactsIcon}
+        handleChange={handleChange}
+        errorMessage={errorMessages.lastname}
+      />
+      <CustomInput
+        id="input-firstname"
+        name="firstname"
+        label="Votre prénom"
+        icon={ContactsIcon}
+        handleChange={handleChange}
+        errorMessage={errorMessages.firstname}
+      />
+
+      {/* <div className="register-form-main-container">
         <FormControl className="register-form-container">
           <InputLabel
             htmlFor="input-with-icon-adornment"
@@ -178,7 +184,7 @@ function Register() {
             }
           />
         </FormControl>
-      </div>
+      </div> */}
       <div className="register-button">
         <Button
           variant="contained"

@@ -1,13 +1,13 @@
 const express = require("express");
 const router = express.Router();
-const verifyPassword = require("../middleware/checkPassWord");
+const validator = require("../middleware/validator");
 
 const user = require("../controllers/User.ctrl");
 
 const { checkAuth } = require("../middleware/auth");
 
 // auth
-router.post("/register", verifyPassword, user.signup);
+router.post("/register", validator.checkRegister, user.signup);
 router.post("/login", user.login);
 router.get("/logout", user.logout);
 router.delete("/delete", checkAuth, user.removeAccount);

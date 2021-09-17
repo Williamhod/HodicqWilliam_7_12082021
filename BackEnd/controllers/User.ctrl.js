@@ -74,11 +74,11 @@ exports.login = (req, res) => {
         } else {
           res.json({
             loggedIn: false,
-            message: "Wrong username/password combo!",
+            message: "Les valeurs identifiants et mots de passe sont erronées",
           });
         }
       } else {
-        res.json({ loggedIn: false, message: "User doesn't exist" });
+        res.json({ loggedIn: false, message: "Merci de bien verifier les champs de l'identifiant et du mot de passe" });
       }
     }
   );

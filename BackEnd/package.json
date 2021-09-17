@@ -27,6 +27,7 @@
     "nodemon": "^2.0.12",
     "password-validator": "^5.1.1",
     "path": "^0.12.7",
-    "sanitize-middleware": "^4.0.4"
+    "sanitize-middleware": "^4.0.4",
+    "validator": "^13.6.0"
   }
 }

@@ -88,7 +88,7 @@ function Login() {
       <div className="login-form-main-container">
         <FormControl className="login-form-container">
           <InputLabel
-            htmlFor="input-with-icon-adornment"
+            htmlFor="input-username"
             style={{
               fontSize: 24,
               margin: -5,
@@ -99,7 +99,7 @@ function Login() {
           <Input
             type="Password"
             className="login-input"
-            id="input-with-icon-adornment"
+            id="input-password"
             onChange={(event) => {
               setPassword(event.target.value);
             }}
