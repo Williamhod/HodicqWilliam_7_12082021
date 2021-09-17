@@ -1,6 +1,6 @@
-# Projet 7 OC Groupomania
+# Projet 7 OC Groupomania React, Material ui, Node.js, Express and MySQL.
 
-- [Projet 7 OC Groupomania](#projet-7-oc-groupomania)
+- [Projet 7 OC Groupomania React, Material ui, Node.js, Express and MySQL.](#projet-7-oc-groupomania-react-material-ui-nodejs-express-and-mysql)
   - [Presentation](#presentation)
   - [Specificity](#specificity)
   - [Technology](#technology)
