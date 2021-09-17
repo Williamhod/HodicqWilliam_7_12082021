@@ -1,44 +1,49 @@
-.Login{
-    width: 100%;
-    height: 750px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+.Login-main-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 90%;
+  margin: 0 auto;
+  background-color: #fff5;
+  padding: 20px;
+  max-width: 1200px !important;
+  min-height: 90vh;
+}
+.Login-main-content {
+  margin: 20px 5px 50px 5px;
 }
 
-.LoginForm { 
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-   
+.login-form-main-container {
+  width: 100% !important;
+  margin: 15px 0 20px 0 !important;
 }
 
-.LoginForm input,button{ 
-    width: 300px;
-    height: 50px;
-   margin: 10px;
-   font-size: 20px;
+.login-form-container {
+  width: 100% !important;
 }
 
-.LoginForm button{
-    border: 1px black solid;
-    background-color: skyblue;
-    border-radius: 10px 10px 10px 10px ;
-    -webkit-border-radius: 25px 25px 25px 25px ;
-    -moz-border-radius: 10px 10px 10px 10px ;
-    -ms-border-radius: 10px 10px 10px 10px ;
-    -o-border-radius: 10px 10px 10px 10px ;
+.login-input {
+  width: 100% !important;
 }
 
-.LoginForm button:hover{
-    cursor: pointer;
-    background-color: rgb(39, 160, 39);
+.log-button {
+  margin: 20px 0;
+}
+.loggin-error-message {
+  font-size: 28px;
+  color: brown;
+  height: 50px;
 }
 
+@media (min-width: 600px) {
+  .login-form-main-container {
+    width: 60% !important;
+  }
+}
 
-.LoginForm h3{
-    color: red;
-    font-size: 25px;
+@media (min-width: 959px) {
+  .login-form-main-container {
+    width: 40% !important;
+  }
 }

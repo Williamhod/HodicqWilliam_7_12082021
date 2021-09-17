@@ -1,69 +1,117 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import "./Home.scss";
 import Axios from "axios";
 import { useLocation } from "react-router-dom";
-import ThumbUpAltTwoToneIcon from "@material-ui/icons/ThumbUpAltTwoTone";
+import Logobar from "../../images/Logo/icon-left-font.png";
+import { LoremIpsum } from "lorem-ipsum";
+import Post from "../../components/Post/Post";
+import LogoLoading from "../../images/Logo/icon.png";
+import AuthContext from "../../context/AuthContext";
+import { useContext } from "react";
 
 function Home() {
-  const [post, setPost] = useState([]);
-  const [loggedIn] = useState(JSON.parse(localStorage.getItem("loggedIn")));
+  const [posts, setPosts] = useState([]);
+  const {
+    connexion: { loggedIn, user },
+  } = useContext(AuthContext);
   const location = useLocation();
+  const userId = user?.userId;
 
-  useEffect(() => {
-    if (!localStorage.getItem("loggedIn")) {
-      localStorage.setItem("loggedIn", false);
-    }
-    if (localStorage.getItem("loggedIn", true)) {
-      Axios.get("http://localhost:3001/post").then((response) => {
-        setPost(response.data);
+  //this dependance is use for lorem auto sentence and lighten the code
+  const lorem = new LoremIpsum({
+    sentencesPerParagraph: {
+      max: 8,
+      min: 4,
+    },
+    wordsPerSentence: {
+      max: 16,
+      min: 4,
+    },
+  });
+  const getPosts = useCallback(() => {
+    console.log('getpost');
+    Axios.get("http://localhost:3001/post?userId=" + userId)
+      .then((res) => res.data)
+      .then((res) => {
+        setPosts(res);
+        console.log(res);
       });
+  },[userId]);
+
+  //this use effect is use to verified the context of connexion and realize the call to get posts
+  useEffect(() => {
+    
+    if (loggedIn === true) {
+      getPosts();
     }
-  }, [location]);
+  }, [location, loggedIn,getPosts]);
 
-  const likePost = (id, key) => {
-    let tempLikes = post;
-    tempLikes[key].likes = tempLikes[key].likes + 1;
+  const likeVal = [1, -1];
+  // function use to adapte front about user like and realise call on db server to increment or remove the like
+  const likePost = async (i) => {
+    const lesPosts = [...posts];
 
-    Axios.post("http://localhost:3001/like", {
-      userLiking: localStorage.getItem("username"),
-      postId: id,
+    lesPosts[i].nbLikes += likeVal[+lesPosts[i].isLiked];
+    lesPosts[i].isLiked = !lesPosts[i].isLiked;
+
+    await Axios.post("http://localhost:3001/post/like", {
+      userId: user.userId,
+      postId: lesPosts[i].id,
+      like: lesPosts[i].isLiked,
     }).then((response) => {
-      console.log("you like this post ");
-      setPost(tempLikes);
+      setPosts(lesPosts);
     });
   };
 
   return (
+    //home page if context return true about connexion
     <>
       {loggedIn ? (
         <div className="home">
-          {post.map((val,key) => {
-            return (
-              <div className="post">
-                <div className="image">
-                  <img src={`http://localhost:3001/${val.image}`} alt="" />
-                </div>
-                <div className="content">
-                  <div className="title">
-                    {val.title} /by @ {val.author}
-                  </div>
-                  <div className="description">{val.description}</div>
-                </div>
-                <div className="Engagement">
-                  <ThumbUpAltTwoToneIcon
-                    id="likeButton"
-                    onClick={() => {
-                      likePost(val.id, key);
-                    }}
-                  />
-                  {val.likes}
-                </div>
-              </div>
-            );
-          })}
+          <div className="home-loggin">
+            {posts.length ? (
+              posts.map((post, key) => (
+                <Post
+                  post={post}
+                  key={key}
+                  index={key}
+                  likePost={likePost}
+                  getPosts={getPosts}
+                />
+              ))
+            ) : (
+              <p>Soyez le premier a publier !</p>
+            )}
+            <div>
+              <img
+                className="logo-homePage"
+                src={LogoLoading}
+                alt="Logo de l'entreprise"
+              />
+            </div>
+          </div>
         </div>
       ) : (
-        <div>home dc</div>
+        //home page when context return false about connexion
+        <div className="home">
+          <div className="home-notloggin">
+            <div className="home-notloggin-main">
+              <img
+                src={Logobar}
+                alt="Logo de l'entreprise"
+                className="home-main-img"
+              />
+              <h1>Bienvenue à tous sur notre réseaux sociale d'entreprise !</h1>
+            </div>
+            <div>
+              <p className="home-notloggin-P">{lorem.generateParagraphs(7)}</p>
+              <p className="home-notloggin-P">{lorem.generateParagraphs(5)}</p>
+              <p className="home-notloggin-P">{lorem.generateParagraphs(3)}</p>
+              <p className="home-notloggin-P">{lorem.generateParagraphs(2)}</p>
+              <p className="home-notloggin-P">{lorem.generateParagraphs(1)}</p>
+            </div>
+          </div>
+        </div>
       )}
     </>
   );

@@ -4,12 +4,30 @@ const router = express.Router();
 const ctrl = require('../controllers/Posts.ctrl');
 
 
+// const auth= require('../middleware/auth');
+const {checkAuth} = require('../middleware/auth');
+
+
 const multer = require('../middleware/multer-config');
 const sharp = require('../middleware/sharp-config');
+const jimp= require('../middleware/jimp-config');
 
-router.get("/", ctrl.readPosts);
 
-// auth
-router.post("/", multer, sharp, ctrl.createPost);
+//Posts
+router.post("/",checkAuth, multer, ctrl.createPost);
+router.get("/",checkAuth, ctrl.readPosts);
+router.delete("/:postId", checkAuth, ctrl.removePost);
+
+//Comments
+router.get("/:id/comments", checkAuth, ctrl.getComments);
+router.post("/comment",checkAuth, ctrl.sendComment);
+router.delete("/comment/:commentId",checkAuth, ctrl.removeComment);
+
+//Like
+router.post("/like",checkAuth, ctrl.likePost);
+
+
+
+
 
 module.exports = router;

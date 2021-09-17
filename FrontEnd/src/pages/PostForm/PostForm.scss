@@ -1,0 +1,50 @@
+.post-main-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 90%;
+    margin: 0 auto;
+    background-color: #fff5;
+    padding: 20px;
+    max-width: 1200px !important;
+    min-height: 90vh;
+  }
+  .post-main-content {
+    margin: 20px 5px 50px 5px;
+  }
+  
+  .post-form-main-container {
+    width: 100% !important;
+    margin: 15px 0 20px 0 !important;
+  }
+  
+  .post-form-container {
+    width: 100% !important;
+  }
+  
+  .post-input {
+    width: 100% !important;
+  }
+  
+  .log-button {
+    margin: 20px 0;
+  }
+  .loggin-error-message {
+    font-size: 28px;
+    color: brown;
+    height: 50px;
+  }
+  
+  @media (min-width: 600px) {
+    .post-form-main-container {
+      width: 60% !important;
+    }
+  }
+  
+  @media (min-width: 959px) {
+    .post-form-main-container {
+      width: 40% !important;
+    }
+  }
+  

@@ -1,69 +1,74 @@
-.home{
-    width: 100%;
-    height: auto;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+//@mixin circle($width) {
+//  width: $width * 1px;
+//  height: $width * 1px;
+//  border-radius: 50%;
+//  object-fit: cover;
+//}
+
+.home {
+  width: 100%;
+  flex-grow: 1;
+  margin: 20px 0;
 }
 
-.home .post{
-    width: 750px;
-    height: 600px;
-    border: 2px solid black;
-    display: flex;
-    flex-direction: column;
-    margin: 50px;
+.home-notloggin {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 90%;
+  margin: 0 auto;
+  background-color: #fff5;
+  padding: 20px;
+  max-width: 1200px !important;
+  gap: 10px;
 }
 
-//img post
-
-.home .post .image{
-    flex: 70%;
-  
+.home-notloggin img {
+  max-width: calc(1200px * 0.9);
+  width: 100%;
 }
 
-.home .post .image img {
-   width: 100%;
+.home-notloggin-P {
+  font-size: 18px;
+  margin: 10px 0;
 }
 
-//content post
-
-.home .post .content{
-    flex: 30%;
-    display: flex;
-    flex-direction: column;
+.home-notloggin-main {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+}
+.home-notloggin-main h1 {
+  text-align: center;
+}
+.home-loggin {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 90%;
+  margin: 0 auto;
+  background-color: #fff5;
+  padding: 20px;
+  max-width: 1200px !important;
 }
 
-.home .post .title{
-    flex: 30%;
-    text-align: center;
-    font-size: 30px;
+.logo-homePage {
+  animation: App-logo-spin infinite 5s linear;
+  width: 50px;
+  height: 60px;
+  -webkit-animation: App-logo-spin infinite 5s linear;
 }
 
-.home .post .description{
-   flex: 50%;
-   text-align: center;
-   font-size: 27px;
-}
-
-.Engagement{
-    flex: 20%;
-    display: grid;
-    place-items: center;
-}
-
-#likeButton{
-    font-Size: 40px;
-    color:#59999b;
-}
-
-#likeButton:hover{
-    font-Size: 45px;
-    color:#165758;
-    cursor: pointer;
-}
-
-#likeButton:active{
-    color:#165758;
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }

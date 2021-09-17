@@ -1,0 +1,44 @@
+footer{
+    background: linear-gradient(70deg, rgb(255, 214, 214) 0%, rgba(172, 172, 185, 0.9) 50%, rgba(195,215,215,1))100%;
+    box-shadow: 0px 2px 4px 5px rgba(0,0,0,0.2),0px 4px 5px 0px rgba(0,0,0,0.14),0px 1px 10px 0px rgba(0,0,0,0.12);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: calc(100vw + 10px);
+}
+
+footer ul {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    width: 100%;
+}
+
+footer ul li {
+    list-style-type: none;
+    cursor: pointer;
+    color: #9c0303;
+    text-align: center;
+    font-size: 26px;
+    padding: 5px 15px;
+    user-select: none;
+   text-transform: uppercase;
+}
+
+footer ul li:hover {
+    box-sizing: border-box;
+    transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,border 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    border-radius: 4px;
+    background-color: #fff5 !important;
+}
+
+@media (max-width:600px){
+    footer ul li{
+        font-size: 20px;
+    }
+}
+// background: linear-gradient(70deg, rgba(255,215,215,1) 0%, rgba(114,114,126,0.9) 43%, rgba(125,124,124,1))100%;
+
+//linear-gradient(70deg, rgba(195,215,215,1) 0%, rgba(172, 172, 185, 0.9) 50%, rgb(255, 214, 214)100%
+
+//linear-gradient(70deg, rgb(255, 214, 214) 0%, rgba(172, 172, 185, 0.9) 50%, rgba(195,215,215,1))100%;
