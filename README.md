@@ -79,24 +79,25 @@ For the server, i use node.js and express to build the app who will exchange dat
 
 #### Dependancies
 
-|  NPM Dependencies  |                                                   Utility                                                   |
-| :----------------: | :---------------------------------------------------------------------------------------------------------: |
-|      nodemon       |                          Allows you to restart the server at the slightest change                           |
-|      express       |                                   Framework to build the web application                                    |
-|       bcrypt       |                         Encryption technology used to store our passwords in the DB                         |
-| password-validator |                                Allows us to create a typical password scheme                                |
-|    jsonwebtoken    |                       Allows the creation of identification tokens to secure our app                        |
-|       multer       |                        Package that allows to manage incoming files in our requests                         |
-|        path        |           Used to upload our images in order to work on the path of the files in our directories            |
-|       dotenv       |                       Used to load the environment variables contained in a file.env                        |
-| express-rate-limit |                      Limits the number of requests per IP on the configured time index                      |
-|       helmet       | Secures the application of well-known vulnerabilities (cross-site scripting, sniffing, xss protection, ...) |
-|         fs         |                (File System) Allows you to manage the downloading and modification of images                |
-|      no cache      |                    Allows not to keep a backend cache to always have the update version                     |
-|       chalk        |                       Use to provide color on our console.log or message from server                        |
-|   cookie-parser    |                                  Allows the use of cookies in this project                                  |
-|        Cors        |                                   Simplifies headers, cors configuration                                    |
-|       Morgan       |                             Provide informations on terminal about http request                             |
+|  NPM Dependencies   |                                                   Utility                                                   |
+| :-----------------: | :---------------------------------------------------------------------------------------------------------: |
+|       nodemon       |                          Allows you to restart the server at the slightest change                           |
+|       express       |                                   Framework to build the web application                                    |
+|       bcrypt        |                         Encryption technology used to store our passwords in the DB                         |
+| password-validator  |                                Allows us to create a typical password scheme                                |
+|    jsonwebtoken     |                       Allows the creation of identification tokens to secure our app                        |
+|       multer        |                        Package that allows to manage incoming files in our requests                         |
+|        path         |           Used to upload our images in order to work on the path of the files in our directories            |
+|       dotenv        |                       Used to load the environment variables contained in a file.env                        |
+| express-rate-limit  |                      Limits the number of requests per IP on the configured time index                      |
+|       helmet        | Secures the application of well-known vulnerabilities (cross-site scripting, sniffing, xss protection, ...) |
+|         fs          |                (File System) Allows you to manage the downloading and modification of images                |
+|      no cache       |                    Allows not to keep a backend cache to always have the update version                     |
+|        chalk        |                       Use to provide color on our console.log or message from server                        |
+|    cookie-parser    |                                  Allows the use of cookies in this project                                  |
+|        Cors         |                                   Simplifies headers, cors configuration                                    |
+|       Morgan        |                             Provide informations on terminal about http request                             |
+| sanitize-middleware |                      struggle against injection attacks and cross-site scripting (XSS)                      |
 
 ## Scripts
 

@@ -9,8 +9,7 @@ const {checkAuth} = require('../middleware/auth');
 
 
 const multer = require('../middleware/multer-config');
-const sharp = require('../middleware/sharp-config');
-const jimp= require('../middleware/jimp-config');
+
 
 
 //Posts
