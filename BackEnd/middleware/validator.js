@@ -17,11 +17,11 @@ exports.checkRegister = (req, res, next) => {
   }
   if (!validator.isAlpha(firstname)) {
     errorMessages.firstname =
-      "Merci de respecter les conditions suivantes concernant votre username : une majuscule, le reste en miniscule, pas de charactère spécial, ni de chiffre";
+      "Merci de respecter les conditions suivantes concernant votre prenom : une majuscule, le reste en miniscule, pas de charactère spécial, ni de chiffre";
   }
   if (!validator.isAlpha(lastname)) {
     errorMessages.lastname =
-      "Merci de respecter les conditions suivantes concernant votre username : une majuscule, le reste en miniscule, pas de charactère spécial, ni de chiffre";
+      "Merci de respecter les conditions suivantes concernant votre nom de famille : une majuscule, le reste en miniscule, pas de charactère spécial, ni de chiffre";
   }
 
   if (!isEmpty(errorMessages)) {

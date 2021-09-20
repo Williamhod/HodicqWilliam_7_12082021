@@ -67,7 +67,7 @@ function Register() {
       <CustomInput
         id="input-username"
         name="username"
-        label="Votre identifiant"
+        label="Votre identifiant *"
         icon={AccountCircle}
         handleChange={handleChange}
         errorMessage={errorMessages.username}
@@ -75,7 +75,7 @@ function Register() {
       <CustomInput
         id="input-password"
         name="password"
-        label="Votre identifiant"
+        label="Votre mot de passe *"
         icon={VpnKeyIcon}
         handleChange={handleChange}
         errorMessage={errorMessages.password}
@@ -83,7 +83,7 @@ function Register() {
       <CustomInput
         id="input-lastname"
         name="lastname"
-        label="Votre nom de famille"
+        label="Votre nom de famille *"
         icon={ContactsIcon}
         handleChange={handleChange}
         errorMessage={errorMessages.lastname}
@@ -91,7 +91,7 @@ function Register() {
       <CustomInput
         id="input-firstname"
         name="firstname"
-        label="Votre prénom"
+        label="Votre prénom *"
         icon={ContactsIcon}
         handleChange={handleChange}
         errorMessage={errorMessages.firstname}
