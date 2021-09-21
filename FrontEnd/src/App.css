@@ -48,3 +48,11 @@ input:-internal-autofill-selected {
 *::-webkit-scrollbar-thumb:hover {
   background-color: rgb(128, 128, 128);
 }
+
+.MuiTypography-colorTextSecondary {
+ color: black!important;
+ font-weight: 500!important;
+}
+.MuiFormLabel-root {
+  color: rgb(0 0 0 / 86%)!important;
+}
