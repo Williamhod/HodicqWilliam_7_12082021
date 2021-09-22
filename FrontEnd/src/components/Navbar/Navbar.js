@@ -15,7 +15,7 @@ import { useMediaQuery } from "@material-ui/core";
 import Axios from "axios";
 import { useContext } from "react";
 import AuthContext from "../../context/AuthContext";
-import {menuItemsLogged, menuItemsNotLogged} from '../../datas/dataMenu'
+import { menuItemsLogged, menuItemsNotLogged } from "../../datas/dataMenu";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -50,25 +50,31 @@ function Navbar(props) {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleMenuClick = (pageURL) => {
-    history.push(pageURL);
-    setAnchorEl(null);
+  const handleMenuClick = async (pageURL, disconnect) => {
+    if (disconnect) {
+      await Axios.get("http://localhost:3001/user/logout")
+        .then(console.log)
+        .then(() => getConnexion())
+        .then(setAnchorEl(null));
+    } else {
+      history.push(pageURL);
+      setAnchorEl(null);
+    }
   };
 
   const handleButtonClick = (pageURL) => {
     history.push(pageURL);
   };
 
-  
-//call server for fisconnection button to set up cookie to nul 
+  //call server for fisconnection button to set up cookie to nul
   const changeUrl = async (pageURL, disconnect) => {
     console.log("disconnect", disconnect);
     if (disconnect) {
       await Axios.get("http://localhost:3001/user/logout")
-      .then(console.log)
-      .then(() => getConnexion())
+        .then(console.log)
+        .then(() => getConnexion());
     }
-      handleButtonClick(pageURL);
+    handleButtonClick(pageURL);
     // }
   };
 
@@ -126,12 +132,12 @@ function Navbar(props) {
                   onClose={() => setAnchorEl(null)}
                 >
                   {menuItems.map((menuItem) => {
-                    const { menuTitle, pageURL } = menuItem;
+                    const { menuTitle, pageURL, disconnect } = menuItem;
                     return (
                       <MenuItem
                         className="MenuItem-Li"
                         key={menuItem.id}
-                        onClick={() => handleMenuClick(pageURL)}
+                        onClick={() => handleMenuClick(pageURL, disconnect)}
                       >
                         {menuTitle}
                       </MenuItem>
@@ -140,7 +146,7 @@ function Navbar(props) {
                 </Menu>
               </>
             ) : (
-                // set up for desktop navbar 
+              // set up for desktop navbar
               <div className="Navbar-Button-container">
                 {menuItems.map((menuItem) => {
                   const { id, menuTitle, pageURL, disconnect } = menuItem;
